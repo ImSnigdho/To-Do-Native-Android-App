@@ -1,5 +1,5 @@
 
-markdown_content = """# 📝 Android To-Do List App
+# 📝 Android To-Do List App
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Platform](https://img.shields.io/badge/platform-Android-blue)
