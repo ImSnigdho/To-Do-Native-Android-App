@@ -22,6 +22,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -324,6 +325,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
 
     var isRegisterState by remember { mutableStateOf(false) }
     var forgotPasswordMode by remember { mutableStateOf(false) }
+    var showGoogleAccountPicker by remember { mutableStateOf(false) }
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -514,8 +516,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             // SSO Single Sign-On and Guest Check-ins
             Button(
                 onClick = {
-                    viewModel.loginWithGoogle()
-                    onSuccess()
+                    showGoogleAccountPicker = true
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -559,6 +560,172 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                 )
             }
         }
+
+        // Animated Google Account Picker Overlay Bottom Sheet
+        if (showGoogleAccountPicker) {
+            var selectedEmailForLoading by remember { mutableStateOf<String?>(null) }
+            
+            // Dimmed background click overlay
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable { 
+                        if (selectedEmailForLoading == null) {
+                            showGoogleAccountPicker = false 
+                        }
+                    }
+            )
+
+            // Bottom centered account list bottom sheet
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(enabled = false) {}, // absorb touch events
+                    shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+                    color = Color.White,
+                    tonalElevation = 8.dp
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp)
+                    ) {
+                        if (selectedEmailForLoading != null) {
+                            // Authentic simulated credential sign in with progress loader
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                CircularProgressIndicator(color = Color(0xFF7C4DFF))
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    "Signing in to To-Do App...", 
+                                    color = Color(0xFF1F1A18), 
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
+                                Text(
+                                    selectedEmailForLoading!!, 
+                                    color = Color(0xFF85736E), 
+                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                        } else {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "G",
+                                    fontWeight = FontWeight.Black,
+                                    fontSize = 24.sp,
+                                    color = Color(0xFF4285F4)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Choose an account",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF1F1A18)
+                                )
+                            }
+                            
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "to continue to To-Do App",
+                                fontSize = 14.sp,
+                                color = Color(0xFF514441),
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            val accounts = listOf(
+                                Triple("Cubecraft Developer", "cubecraft627@gmail.com", Color(0xFF7C4DFF)),
+                                Triple("Cubecraft Secondary", "cubecraft.dev@gmail.com", Color(0xFF00E676)),
+                                Triple("Guest Account", "guest.user.todo@gmail.com", Color(0xFFFF5722))
+                            )
+
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                accounts.forEach { (name, emailStr, avatarColor) ->
+                                    Surface(
+                                        onClick = {
+                                            selectedEmailForLoading = emailStr
+                                            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                                viewModel.loginWithGoogle(emailStr)
+                                                onSuccess()
+                                                showGoogleAccountPicker = false
+                                                selectedEmailForLoading = null
+                                            }, 1200)
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        shape = RoundedCornerShape(12.dp),
+                                        color = Color(0xFFFFF1EE),
+                                        border = BorderStroke(1.dp, Color(0xFFF5DED8))
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(16.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(40.dp)
+                                                    .background(avatarColor, CircleShape),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = name.first().toString(),
+                                                    color = Color.White,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 18.sp
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.width(16.dp))
+                                            Column {
+                                                Text(
+                                                    text = name,
+                                                    fontWeight = FontWeight.SemiBold,
+                                                    color = Color(0xFF1F1A18),
+                                                    fontSize = 14.sp
+                                                )
+                                                Text(
+                                                    text = emailStr,
+                                                    color = Color(0xFF514441),
+                                                    fontSize = 12.sp
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = "To continue, Google will share your name, email address, language preference and profile picture with To-Do App. Before using this app, you can review its privacy policy and terms of service.",
+                                fontSize = 11.sp,
+                                color = Color(0xFF85736E),
+                                lineHeight = 16.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -574,8 +741,9 @@ fun MainAppShell(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
-    var currentBottomTab by remember { mutableStateOf("Tasks") } // "Tasks", "Calendar", "Search", "Settings"
+    var currentBottomTab by remember { mutableStateOf("Tasks") } // "Tasks", "Calendar", "Settings"
     var activeTaskIdForDetails by remember { mutableStateOf<Long?>(null) } // null = show lists, id = show detail edit view
+    var calendarSelectedDateMs by remember { mutableStateOf(System.currentTimeMillis()) }
 
     val projects by todoViewModel.projects.collectAsStateWithLifecycle()
     val tags by todoViewModel.tags.collectAsStateWithLifecycle()
@@ -588,6 +756,7 @@ fun MainAppShell(
 
     // Modals
     var showQuickAddDialog by remember { mutableStateOf(false) }
+    var showScheduleWorkflow by remember { mutableStateOf(false) }
     var showAddProjectDialog by remember { mutableStateOf(false) }
     var showAddTagDialog by remember { mutableStateOf(false) }
 
@@ -835,11 +1004,6 @@ fun MainAppShell(
                                     Icon(Icons.Default.Menu, contentDescription = null, tint = Color(0xFF1F1A18))
                                 }
                             },
-                            actions = {
-                                IconButton(onClick = { currentBottomTab = "Search" }) {
-                                    Icon(Icons.Default.Search, contentDescription = "Search", tint = Color(0xFF1F1A18))
-                                }
-                            },
                             colors = TopAppBarDefaults.largeTopAppBarColors(
                                 containerColor = Color(0xFFFDF8F6),
                                 titleContentColor = Color(0xFF1F1A18)
@@ -862,7 +1026,6 @@ fun MainAppShell(
                                 val navItems = listOf(
                                     Triple("Tasks", "Tasks", Icons.Default.Check),
                                     Triple("Calendar", "Calendar", Icons.Default.CalendarToday),
-                                    Triple("Search", "Shared", Icons.Default.Share),
                                     Triple("Settings", "Settings", Icons.Default.Settings)
                                 )
                                 navItems.forEach { (tabKey, label, icon) ->
@@ -883,14 +1046,26 @@ fun MainAppShell(
                 },
                 floatingActionButton = {
                     if (activeTaskIdForDetails == null) {
-                        FloatingActionButton(
-                            onClick = { showQuickAddDialog = true },
-                            containerColor = Color(0xFFFFDBCC),
-                            contentColor = Color(0xFF8F4C38),
-                            shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier.testTag("fab_add_task")
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = "Quick Add Task")
+                        if (currentBottomTab == "Calendar") {
+                            FloatingActionButton(
+                                onClick = { showScheduleWorkflow = true },
+                                containerColor = Color(0xFF8F4C38),
+                                contentColor = Color.White,
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier.testTag("fab_schedule_task")
+                            ) {
+                                Icon(Icons.Default.CalendarToday, contentDescription = "Schedule Task")
+                            }
+                        } else {
+                            FloatingActionButton(
+                                onClick = { showQuickAddDialog = true },
+                                containerColor = Color(0xFFFFDBCC),
+                                contentColor = Color(0xFF8F4C38),
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier.testTag("fab_add_task")
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = "Quick Add Task")
+                            }
                         }
                     }
                 },
@@ -915,10 +1090,8 @@ fun MainAppShell(
                             )
                             "Calendar" -> CalendarTabScreen(
                                 viewModel = todoViewModel,
-                                onSelectTask = { activeTaskIdForDetails = it }
-                            )
-                            "Search" -> SearchTabScreen(
-                                viewModel = todoViewModel,
+                                selectedDateMs = calendarSelectedDateMs,
+                                onDateSelected = { calendarSelectedDateMs = it },
                                 onSelectTask = { activeTaskIdForDetails = it }
                             )
                             "Settings" -> SettingsTabScreen(
@@ -937,7 +1110,26 @@ fun MainAppShell(
         if (showQuickAddDialog) {
             QuickAddTaskDialog(
                 viewModel = todoViewModel,
-                onDismiss = { showQuickAddDialog = false }
+                onDismiss = { showQuickAddDialog = false },
+                onTaskCreated = { newId ->
+                    activeTaskIdForDetails = newId
+                    showQuickAddDialog = false
+                }
+            )
+        }
+
+        // ==========================================
+        // SCHEDULE TASK DIALOG FOR CALENDAR TAB
+        // ==========================================
+        if (showScheduleWorkflow) {
+            ScheduleTaskDialog(
+                initialDate = calendarSelectedDateMs,
+                viewModel = todoViewModel,
+                onDismiss = { showScheduleWorkflow = false },
+                onTaskCreated = { newId ->
+                    activeTaskIdForDetails = newId
+                    showScheduleWorkflow = false
+                }
             )
         }
 
@@ -1169,6 +1361,7 @@ fun TaskListItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .testTag("task_item_card_${task.id}")
+            .alpha(if (task.isCompleted) 0.5f else 1.0f)
             .clickable(onClick = onClick),
         color = Color.White,
         shape = RoundedCornerShape(24.dp), // rounded-3xl
@@ -1269,26 +1462,142 @@ fun TaskListItemCard(
 @Composable
 fun CalendarTabScreen(
     viewModel: TodoViewModel,
+    selectedDateMs: Long,
+    onDateSelected: (Long) -> Unit,
     onSelectTask: (Long) -> Unit
 ) {
     val tasks by viewModel.tasks.collectAsStateWithLifecycle()
 
-    val upcomingTasks = tasks.filter { it.dueDate != null && !it.isCompleted }
+    val sdf = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+    val selectedYmd = sdf.format(Date(selectedDateMs))
+
+    val scheduledTasksForDay = tasks.filter { task ->
+        task.dueDate != null && !task.isCompleted && sdf.format(Date(task.dueDate)) == selectedYmd
+    }
+
+    val sdfDay = SimpleDateFormat("E", Locale.getDefault())
+    val sdfDate = SimpleDateFormat("dd", Locale.getDefault())
+    val sdfMonth = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+    val monthLabel = sdfMonth.format(Date(selectedDateMs))
+
+    val datesList = remember {
+        val list = mutableListOf<Long>()
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_YEAR, -3) // Start 3 days before today for rolling context
+        for (i in 0 until 14) {
+            list.add(cal.timeInMillis)
+            cal.add(Calendar.DAY_OF_YEAR, 1)
+        }
+        list
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Weekly Schedule Flow", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1F1A18))
+        // Month / Year Calendar Header
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = monthLabel,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1F1A18)
+            )
+            Icon(
+                imageVector = Icons.Default.CalendarToday,
+                contentDescription = null,
+                tint = Color(0xFF8F4C38),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.height(14.dp))
 
-        if (upcomingTasks.isEmpty()) {
-            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+        // Rolling 14-days visual Calendar Strip (horizontal)
+        androidx.compose.foundation.lazy.LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(datesList) { dateMs ->
+                val isSelected = sdf.format(Date(dateMs)) == selectedYmd
+                val dayStr = sdfDay.format(Date(dateMs))
+                val dateStr = sdfDate.format(Date(dateMs))
+
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = if (isSelected) Color(0xFF8F4C38) else Color(0xFFFFF9F8),
+                    border = BorderStroke(1.dp, if (isSelected) Color(0xFF8F4C38) else Color(0xFFF5DED8)),
+                    modifier = Modifier
+                        .width(60.dp)
+                        .clickable { onDateSelected(dateMs) }
+                        .testTag("calendar_day_strip_${dateStr}")
+                ) {
+                    Column(
+                        modifier = Modifier.padding(vertical = 14.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = dayStr.uppercase(Locale.getDefault()),
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isSelected) Color.White else Color(0xFF85736E)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = dateStr,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = if (isSelected) Color.White else Color(0xFF1F1A18)
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Active Date Scheduled Tasks Section Title
+        Text(
+            text = "Scheduled Tasks",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF514441)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (scheduledTasksForDay.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.EventBusy, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.3f), modifier = Modifier.size(96.dp))
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text("No future schedules registered.", color = Color(0xFF514441))
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = null,
+                        tint = Color(0xFF8F4C38).copy(alpha = 0.15f),
+                        modifier = Modifier.size(96.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "All clear for today!",
+                        color = Color(0xFF1F1A18),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "No schedules or events planned.",
+                        color = Color(0xFF85736E),
+                        fontSize = 12.sp
+                    )
                 }
             }
         } else {
@@ -1296,8 +1605,12 @@ fun CalendarTabScreen(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                items(upcomingTasks) { task ->
-                    TaskListItemCard(task = task, onCheckToggle = { viewModel.toggleTaskCompletion(task) }, onClick = { onSelectTask(task.id) })
+                items(scheduledTasksForDay) { task ->
+                    TaskListItemCard(
+                        task = task,
+                        onCheckToggle = { viewModel.toggleTaskCompletion(task) },
+                        onClick = { onSelectTask(task.id) }
+                    )
                 }
             }
         }
@@ -1305,59 +1618,188 @@ fun CalendarTabScreen(
 }
 
 // ==========================================
-// 7. GLOBAL SEARCH TAB SCREEN
+// 7. SCHEDULE TASK FLOW MODAL DIALOG
 // ==========================================
 @Composable
-fun SearchTabScreen(
+fun ScheduleTaskDialog(
+    initialDate: Long,
     viewModel: TodoViewModel,
-    onSelectTask: (Long) -> Unit
+    onDismiss: () -> Unit,
+    onTaskCreated: (Long) -> Unit
 ) {
-    val search by viewModel.searchQuery.collectAsStateWithLifecycle()
-    val tasks by viewModel.tasks.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    var title by remember { mutableStateOf("") }
+    var notes by remember { mutableStateOf("") }
+    var selectedDateMs by remember { mutableStateOf(initialDate) }
+    var selectedTime by remember { mutableStateOf("12:00") }
+    var priority by remember { mutableStateOf(4) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        OutlinedTextField(
-            value = search,
-            onValueChange = { viewModel.setSearchQuery(it) },
-            placeholder = { Text("Search title, priority, notes...", color = Color(0xFF514441)) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFF514441)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("search_field"),
-            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color(0xFF1F1A18), unfocusedTextColor = Color(0xFF1F1A18)),
-            shape = RoundedCornerShape(12.dp)
-        )
+    val calendar = Calendar.getInstance().apply { timeInMillis = selectedDateMs }
+    val dateFormated = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(selectedDateMs))
 
-        Spacer(modifier = Modifier.height(16.dp))
+    val datePickerDialog = android.app.DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val newCalendar = Calendar.getInstance()
+            newCalendar.set(year, month, dayOfMonth)
+            selectedDateMs = newCalendar.timeInMillis
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
 
-        if (search.isBlank()) {
-            // Suggest tags keywords search
-            Text("Suggested Keywords", fontSize = 12.sp, color = Color(0xFF514441))
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-                val suggestions = listOf("Shop", "Meeting", "P1", "Groceries")
-                suggestions.forEach { tag ->
-                    Box(
-                        modifier = Modifier
-                            .background(Color(0xFFFFDBD1), RoundedCornerShape(8.dp))
-                            .clickable { viewModel.setSearchQuery(tag) }
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
-                    ) {
-                        Text(tag, color = Color(0xFF8F4C38), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+    val timePickerDialog = android.app.TimePickerDialog(
+        context,
+        { _, hour, minute ->
+            selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
+        },
+        12,
+        0,
+        true
+    )
+
+    val coroutine = rememberCoroutineScope()
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            color = Color.White,
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            tonalElevation = 6.dp
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Schedule Task", 
+                        fontSize = 20.sp, 
+                        fontWeight = FontWeight.Bold, 
+                        color = Color(0xFF1F1A18)
+                    )
+                    IconButton(onClick = onDismiss) {
+                        Icon(Icons.Default.Close, contentDescription = "Close")
                     }
                 }
-            }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            items(tasks) { task ->
-                TaskListItemCard(task = task, onCheckToggle = { viewModel.toggleTaskCompletion(task) }, onClick = { onSelectTask(task.id) })
+                Text("Task Title", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF514441))
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = title,
+                    onValueChange = { title = it },
+                    placeholder = { Text("What are you planning?", color = Color(0xFF85736E)) },
+                    modifier = Modifier.fillMaxWidth().testTag("schedule_title_input"),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color(0xFF1F1A18), 
+                        unfocusedTextColor = Color(0xFF1F1A18),
+                        focusedBorderColor = Color(0xFF8F4C38),
+                        unfocusedBorderColor = Color(0xFFF5DED8)
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Date & Time Schedule", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF514441))
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    // Date selector custom card
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color(0xFFFFDBCC),
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { datePickerDialog.show() }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(14.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(dateFormated, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF8F4C38))
+                        }
+                    }
+
+                    // Time selector custom card
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color(0xFFFFDBCC),
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { timePickerDialog.show() }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(14.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.AccessTime, contentDescription = null, tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(selectedTime, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF8F4C38))
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Notes", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF514441))
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = notes,
+                    onValueChange = { notes = it },
+                    placeholder = { Text("Add scheduling notes...", color = Color(0xFF85736E)) },
+                    modifier = Modifier.fillMaxWidth().testTag("schedule_notes_input"),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color(0xFF1F1A18), 
+                        unfocusedTextColor = Color(0xFF1F1A18),
+                        focusedBorderColor = Color(0xFF8F4C38),
+                        unfocusedBorderColor = Color(0xFFF5DED8)
+                    ),
+                    maxLines = 3
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        if (title.isNotBlank()) {
+                            coroutine.launch {
+                                val newId = viewModel.addTaskAndGetId(
+                                    title = title,
+                                    description = notes,
+                                    dueDate = selectedDateMs,
+                                    dueTime = selectedTime,
+                                    priority = priority
+                                )
+                                onTaskCreated(newId)
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(54.dp)
+                        .testTag("schedule_submit_btn"),
+                    shape = RoundedCornerShape(27.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8F4C38)),
+                    enabled = title.isNotBlank()
+                ) {
+                    Text("Create & Focus Schedule", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                }
             }
         }
     }
@@ -1376,6 +1818,22 @@ fun SettingsTabScreen(
     val isGuestMode by authViewModel.isGuestMode.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
+    val exportLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        uri?.let {
+            try {
+                val json = todoViewModel.exportDataAsJson()
+                context.contentResolver.openOutputStream(it)?.use { outputStream ->
+                    outputStream.write(json.toByteArray())
+                }
+                Toast.makeText(context, "Backup saved physically to device downloads storage!", Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed to save backup: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -1447,11 +1905,7 @@ fun SettingsTabScreen(
 
         Button(
             onClick = {
-                val json = todoViewModel.exportDataAsJson()
-                val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                val clipData = android.content.ClipData.newPlainText("Backup JSON", json)
-                clipboardManager.setPrimaryClip(clipData)
-                Toast.makeText(context, "Exported JSON copied to Clipboard!", Toast.LENGTH_LONG).show()
+                exportLauncher.launch("backup.json")
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00B0FF))
@@ -1474,7 +1928,8 @@ fun SettingsTabScreen(
 @Composable
 fun QuickAddTaskDialog(
     viewModel: TodoViewModel,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onTaskCreated: (Long) -> Unit
 ) {
     var taskText by remember { mutableStateOf("") }
     var nlpEnabled by remember { mutableStateOf(true) }
@@ -1487,84 +1942,155 @@ fun QuickAddTaskDialog(
         Surface(
             color = Color.White,
             shape = RoundedCornerShape(24.dp),
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            tonalElevation = 6.dp
         ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(
-                    text = "Quick Task Record",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1F1A18)
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-
-                OutlinedTextField(
-                    value = taskText,
-                    onValueChange = { taskText = it },
-                    placeholder = { Text("E.g., Buy bread tomorrow at 6 PM P1", color = Color(0xFF514441)) },
-                    modifier = Modifier.fillMaxWidth().testTag("quick_add_text_input"),
-                    colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color(0xFF1F1A18), unfocusedTextColor = Color(0xFF1F1A18)),
-                    maxLines = 3
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // NLP Toggle switch
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Auto Date NLP Parser", fontSize = 13.sp, color = Color(0xFF1F1A18))
-                    Switch(checked = nlpEnabled, onCheckedChange = { nlpEnabled = it })
+                    Text(
+                        text = "Quick Task Record",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1F1A18)
+                    )
+                    IconButton(onClick = onDismiss) {
+                        Icon(Icons.Default.Close, contentDescription = "Close Dialog", tint = Color(0xFF85736E))
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Modern Search-Bar-Like Soft Text Area
+                OutlinedTextField(
+                    value = taskText,
+                    onValueChange = { taskText = it },
+                    placeholder = { Text("E.g., Buy bread tomorrow at 6 PM P1", color = Color(0xFF85736E), fontSize = 14.sp) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("quick_add_text_input"),
+                    shape = RoundedCornerShape(28.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color(0xFF1F1A18),
+                        unfocusedTextColor = Color(0xFF1F1A18),
+                        focusedContainerColor = Color(0xFFF5EFEF),
+                        unfocusedContainerColor = Color(0xFFF5EFEF),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    ),
+                    maxLines = 3,
+                    singleLine = false
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // NLP Toggle switch Row
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFFFF1EE), RoundedCornerShape(12.dp))
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Auto Date NLP Parser", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1F1A18))
+                        Text("Extract date, time and flags automatically", fontSize = 11.sp, color = Color(0xFF85736E))
+                    }
+                    Switch(
+                        checked = nlpEnabled, 
+                        onCheckedChange = { nlpEnabled = it },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = Color.White,
+                            checkedTrackColor = Color(0xFF8F4C38)
+                        )
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-                // Voice Dictation Mock
+                // Emphasized Voice Dictation Hub (Prominent visual circular trigger)
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(
+                            onClick = {
+                                isSimulatingVoice = true
+                                coroutine.launch {
+                                    delay(1000)
+                                    taskText = "Meet client next week at Noon P1"
+                                    isSimulatingVoice = false
+                                    Toast.makeText(context, "Voice input simulated!", Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            modifier = Modifier
+                                .size(72.dp)
+                                .background(
+                                    if (isSimulatingVoice) Color(0xFFD32F2F) else Color(0xFFFFDBCC),
+                                    shape = CircleShape
+                                )
+                                .testTag("voice_dictation_btn")
+                        ) {
+                            Icon(
+                                imageVector = if (isSimulatingVoice) Icons.AutoMirrored.Filled.VolumeUp else Icons.Default.Mic,
+                                contentDescription = "Voice dictation recording",
+                                tint = if (isSimulatingVoice) Color.White else Color(0xFF8F4C38),
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = if (isSimulatingVoice) "Recording voice..." else "Tap to Dictate (Voice)",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isSimulatingVoice) Color(0xFFD32F2F) else Color(0xFF514441)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Wide, Pill-shaped prominent CTA button spanning full width
                 Button(
                     onClick = {
-                        isSimulatingVoice = true
-                        coroutine.launch {
-                            delay(1000)
-                            taskText = "Meet client next week at Noon P1"
-                            isSimulatingVoice = false
-                            Toast.makeText(context, "Voice input simulated!", Toast.LENGTH_SHORT).show()
+                        if (taskText.isNotBlank()) {
+                            coroutine.launch {
+                                val newId = if (nlpEnabled) {
+                                    viewModel.addTaskWithNlpAndGetId(taskText)
+                                } else {
+                                    viewModel.addTaskAndGetId(title = taskText)
+                                }
+                                onTaskCreated(newId)
+                            }
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1F1A18)),
-                    border = BorderStroke(1.dp, Color(0xFFF5DED8))
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .testTag("quick_add_submit_btn"),
+                    shape = RoundedCornerShape(28.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF8F4C38),
+                        disabledContainerColor = Color(0xFFE5D5D1)
+                    ),
+                    enabled = taskText.isNotBlank()
                 ) {
-                    Icon(
-                        imageVector = if (isSimulatingVoice) Icons.AutoMirrored.Filled.VolumeUp else Icons.Default.Mic,
-                        contentDescription = "Voice dictation recording",
-                        tint = if (isSimulatingVoice) Color.Red else Color(0xFF1F1A18)
+                    Text(
+                        text = "Add Task",
+                        color = Color.White,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 16.sp,
+                        letterSpacing = 0.5.sp
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(if (isSimulatingVoice) "Recording voice..." else "Tap to Dictate (Voice)")
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = onDismiss, colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFF514441))) { Text("Cancel") }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(
-                        onClick = {
-                            if (taskText.isNotBlank()) {
-                                if (nlpEnabled) {
-                                    viewModel.addTaskWithNlp(taskText)
-                                } else {
-                                    viewModel.addTask(title = taskText)
-                                }
-                            }
-                            onDismiss()
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8F4C38))
-                    ) {
-                        Text("Add Task", color = Color.White)
-                    }
                 }
             }
         }
@@ -1605,7 +2131,7 @@ fun TaskDetailPage(
 
     if (task == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(color = Color(0xFF8F4C38))
         }
         return
     }
@@ -1616,7 +2142,7 @@ fun TaskDetailPage(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(20.dp)
+            .padding(16.dp)
     ) {
         // Upper row info
         Row(
@@ -1625,14 +2151,14 @@ fun TaskDetailPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color(0xFF1F1A18))
             }
-            Text("Details Editor", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
+            Text("Details Editor", fontWeight = FontWeight.Bold, color = Color(0xFF1F1A18), fontSize = 18.sp)
             IconButton(onClick = {
                 todoViewModel.deleteTask(currentTask)
                 onBack()
             }) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete Task", tint = Color.Red)
+                Icon(Icons.Default.Delete, contentDescription = "Delete Task", tint = Color(0xFFD32F2F))
             }
         }
 
@@ -1647,8 +2173,18 @@ fun TaskDetailPage(
                 todoViewModel.updateTaskDetails(updated)
             },
             label = { Text("Task Summary Title") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+            modifier = Modifier.fillMaxWidth().testTag("edit_task_title"),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color(0xFF1F1A18),
+                unfocusedTextColor = Color(0xFF1F1A18),
+                focusedBorderColor = Color(0xFF8F4C38),
+                unfocusedBorderColor = Color(0xFFD5C2BE),
+                focusedLabelColor = Color(0xFF8F4C38),
+                unfocusedLabelColor = Color(0xFF85736E),
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -1661,72 +2197,110 @@ fun TaskDetailPage(
                 todoViewModel.updateTaskDetails(updated)
             },
             label = { Text("Rich Formatting Notes") },
-            modifier = Modifier.fillMaxWidth().height(100.dp),
-            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+            modifier = Modifier.fillMaxWidth().height(120.dp).testTag("edit_task_notes"),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color(0xFF1F1A18),
+                unfocusedTextColor = Color(0xFF1F1A18),
+                focusedBorderColor = Color(0xFF8F4C38),
+                unfocusedBorderColor = Color(0xFFD5C2BE),
+                focusedLabelColor = Color(0xFF8F4C38),
+                unfocusedLabelColor = Color(0xFF85736E),
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Priorities selectors
-        Text("Priority Flag", fontSize = 13.sp, color = Color.White.copy(alpha = 0.5f))
+        Text("Priority Flag", fontSize = 13.sp, color = Color(0xFF514441), fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             val priorities = listOf(
                 1 to "P1 (Red)",
                 2 to "P2 (Orange)",
                 3 to "P3 (Yellow)",
-                4 to "P4 (None)"
+                4 to "None"
             )
             priorities.forEach { (p, label) ->
                 val active = currentTask.priority == p
                 val bg = when (p) {
-                    1 -> Color.Red
-                    2 -> Color(0xFFFF5722)
-                    3 -> Color(0xFFFFEB3B)
-                    else -> Color.Gray
+                    1 -> if (active) Color(0xFFD32F2F) else Color(0xFFFFDAD4)
+                    2 -> if (active) Color(0xFFF57C00) else Color(0xFFFFDCC0)
+                    3 -> if (active) Color(0xFFFBC02D) else Color(0xFFFFF9C4)
+                    else -> if (active) Color(0xFF85736E) else Color(0xFFF5EBE8)
+                }
+                val textColor = when (p) {
+                    1 -> if (active) Color.White else Color(0xFF410002)
+                    2 -> if (active) Color.White else Color(0xFF301400)
+                    3 -> if (active) Color.Black else Color(0xFF423A00)
+                    else -> if (active) Color.White else Color(0xFF514441)
+                }
+                val borderCol = when (p) {
+                    1 -> Color(0xFFD32F2F)
+                    2 -> Color(0xFFF57C00)
+                    3 -> Color(0xFFFBC02D)
+                    else -> Color(0xFFD5C2BE)
                 }
                 Box(
                     modifier = Modifier
-                        .background(if (active) bg else bg.copy(alpha = 0.15f), RoundedCornerShape(8.dp))
-                        .border(1.dp, bg, RoundedCornerShape(8.dp))
+                        .weight(1f)
+                        .background(bg, RoundedCornerShape(12.dp))
+                        .border(1.dp, borderCol, RoundedCornerShape(12.dp))
                         .clickable {
                             val updated = currentTask.copy(priority = p)
                             task = updated
                             todoViewModel.updateTaskDetails(updated)
                         }
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(label, color = if (active) Color.Black else bg, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(label, color = textColor, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Recurrence repeats selectors
-        Text("Recurrence Repeat Schedule", fontSize = 13.sp, color = Color.White.copy(alpha = 0.5f))
+        Text("Recurrence Repeat Schedule", fontSize = 13.sp, color = Color(0xFF514441), fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()).fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             val rules = listOf("NONE", "DAILY", "WEEKLY", "MONTHLY", "WEEKDAYS")
             rules.forEach { item ->
                 val active = currentTask.recurrence == item
+                val label = when (item) {
+                    "NONE" -> "None"
+                    "DAILY" -> "Daily"
+                    "WEEKLY" -> "Weekly"
+                    "MONTHLY" -> "Monthly"
+                    "WEEKDAYS" -> "Weekdays"
+                    else -> item
+                }
                 Box(
                     modifier = Modifier
-                        .background(if (active) Color(0xFF00E676).copy(alpha = 0.2f) else Color.White.copy(alpha = 0.05f), RoundedCornerShape(8.dp))
-                        .border(1.dp, if (active) Color(0xFF00E676) else Color.Transparent, RoundedCornerShape(8.dp))
+                        .background(if (active) Color(0xFF8F4C38) else Color(0xFFF5EBE8), RoundedCornerShape(8.dp))
+                        .border(1.dp, if (active) Color(0xFF8F4C38) else Color(0xFFD5C2BE), RoundedCornerShape(8.dp))
                         .clickable {
                             val updated = currentTask.copy(recurrence = item)
                             task = updated
                             todoViewModel.updateTaskDetails(updated)
                         }
-                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                        .padding(horizontal = 14.dp, vertical = 8.dp)
                 ) {
-                    Text(item, color = if (active) Color(0xFF00E676) else Color.White, fontSize = 10.sp)
+                    Text(label, color = if (active) Color.White else Color(0xFF514441), fontSize = 12.sp, fontWeight = FontWeight.Medium)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Subtasks section checklists + nested progress bar!
         val completedCount = subtasks.filter { it.isCompleted }.size
@@ -1737,15 +2311,15 @@ fun TaskDetailPage(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Subtasks Tracker Checklists", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
-            Text("${completedCount}/${subtasks.size} Items Completed", fontSize = 12.sp, color = Color.White.copy(alpha = 0.5f))
+            Text("Subtasks Tracker", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
+            Text("${completedCount}/${subtasks.size} Items Completed", fontSize = 12.sp, color = Color(0xFF514441))
         }
         Spacer(modifier = Modifier.height(8.dp))
         LinearProgressIndicator(
             progress = { progressPercent },
             modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
             color = Color(0xFF00E676),
-            trackColor = Color.White.copy(alpha = 0.1f)
+            trackColor = Color(0xFFF5DED8)
         )
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -1760,12 +2334,12 @@ fun TaskDetailPage(
                 )
                 Text(
                     text = item.title,
-                    color = if (item.isCompleted) Color.White.copy(alpha = 0.5f) else Color.White,
+                    color = if (item.isCompleted) Color(0xFF1F1A18).copy(alpha = 0.5f) else Color(0xFF1F1A18),
                     textDecoration = if (item.isCompleted) TextDecoration.LineThrough else null,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(onClick = { todoViewModel.deleteSubtask(item) }, modifier = Modifier.size(24.dp)) {
-                    Icon(Icons.Default.Delete, contentDescription = null, tint = Color.White.copy(alpha = 0.3f), modifier = Modifier.size(16.dp))
+                    Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFFD32F2F).copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
                 }
             }
         }
@@ -1774,34 +2348,45 @@ fun TaskDetailPage(
             OutlinedTextField(
                 value = subtaskText,
                 onValueChange = { subtaskText = it },
-                placeholder = { Text("Add nested subtask info...") },
+                placeholder = { Text("Add nested subtask info...", color = Color(0xFF85736E)) },
                 modifier = Modifier.weight(1f),
-                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color(0xFF1F1A18),
+                    unfocusedTextColor = Color(0xFF1F1A18),
+                    focusedBorderColor = Color(0xFF8F4C38),
+                    unfocusedBorderColor = Color(0xFFD5C2BE),
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
+                ),
+                shape = RoundedCornerShape(12.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Button(onClick = {
-                if (subtaskText.isNotBlank()) {
-                    todoViewModel.addSubtask(currentTask.id, subtaskText)
-                    subtaskText = ""
-                }
-            }) {
-                Text("Add")
+            Button(
+                onClick = {
+                    if (subtaskText.isNotBlank()) {
+                        todoViewModel.addSubtask(currentTask.id, subtaskText)
+                        subtaskText = ""
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8F4C38))
+            ) {
+                Text("Add", color = Color.White)
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Geofencing GPS Triggers section
-        Text("Geofencing Location Alerts", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+        Text("Geofencing Location Alerts", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
         Spacer(modifier = Modifier.height(10.dp))
-        Surface(color = Color(0xFF1E1D2D), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = Color(0xFFFFF1EE), border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(14.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Trigger on coordinates arrival", color = Color.White)
+                    Text("Trigger on coordinates arrival", color = Color(0xFF1F1A18), fontWeight = FontWeight.Medium)
                     Switch(checked = geofencingEnabled, onCheckedChange = { geofencingEnabled = it })
                 }
                 if (geofencingEnabled) {
@@ -1811,7 +2396,14 @@ fun TaskDetailPage(
                         onValueChange = { locationName = it },
                         label = { Text("Alert Name") },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color(0xFF1F1A18),
+                            unfocusedTextColor = Color(0xFF1F1A18),
+                            focusedBorderColor = Color(0xFF8F4C38),
+                            unfocusedBorderColor = Color(0xFFD5C2BE),
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White
+                        )
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1820,73 +2412,87 @@ fun TaskDetailPage(
                             onValueChange = { latitude = it },
                             label = { Text("Latitude") },
                             modifier = Modifier.weight(1f),
-                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color(0xFF1F1A18),
+                                unfocusedTextColor = Color(0xFF1F1A18),
+                                focusedBorderColor = Color(0xFF8F4C38),
+                                unfocusedBorderColor = Color(0xFFD5C2BE),
+                                focusedContainerColor = Color.White,
+                                unfocusedContainerColor = Color.White
+                            )
                         )
                         OutlinedTextField(
                             value = longitude,
                             onValueChange = { longitude = it },
                             label = { Text("Longitude") },
                             modifier = Modifier.weight(1f),
-                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color(0xFF1F1A18),
+                                unfocusedTextColor = Color(0xFF1F1A18),
+                                focusedBorderColor = Color(0xFF8F4C38),
+                                unfocusedBorderColor = Color(0xFFD5C2BE),
+                                focusedContainerColor = Color.White,
+                                unfocusedContainerColor = Color.White
+                            )
                         )
                     }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Attachments Area (PDF/JPG Upload)
-        Text("Photos & Documents Attachments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+        Text("Photos & Documents Attachments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
         Spacer(modifier = Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
             attachmentsList.forEach { file ->
                 Box(
                     modifier = Modifier
-                        .background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(8.dp))
+                        .background(Color(0xFFF5EBE8), RoundedCornerShape(8.dp))
                         .clickable { Toast.makeText(context, "Opening $file...", Toast.LENGTH_SHORT).show() }
                         .padding(horizontal = 12.dp, vertical = 8.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.AttachFile, contentDescription = null, modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.AttachFile, contentDescription = null, tint = Color(0xFF514441), modifier = Modifier.size(14.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(file, color = Color.White)
+                        Text(file, color = Color(0xFF1F1A18), fontSize = 13.sp)
                     }
                 }
             }
             Box(
                 modifier = Modifier
-                    .background(Color(0xFF00B0FF).copy(alpha = 0.15f), RoundedCornerShape(8.dp))
+                    .background(Color(0xFF8F4C38).copy(alpha = 0.15f), RoundedCornerShape(8.dp))
                     .clickable {
                         attachmentsList = attachmentsList + "attachment_${System.currentTimeMillis() % 1000}.png"
                         Toast.makeText(context, "Uploaded attachment!", Toast.LENGTH_SHORT).show()
                     }
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
-                Text("+ Upload", color = Color(0xFF00B0FF), fontWeight = FontWeight.Bold)
+                Text("+ Upload", color = Color(0xFF8F4C38), fontWeight = FontWeight.Bold, fontSize = 13.sp)
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Localized Collaborative task chat discussion
-        Text("Task Internal Team Comments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+        Text("Task Internal Team Comments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
         Spacer(modifier = Modifier.height(10.dp))
 
-        Surface(color = Color(0xFF1E1D2D), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = Color(0xFFFFF1EE), border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(14.dp)) {
                 if (comments.isEmpty()) {
-                    Text("No coordination remarks posted yet.", color = Color.White.copy(alpha = 0.4f), fontSize = 13.sp)
+                    Text("No coordination remarks posted yet.", color = Color(0xFF85736E), fontSize = 13.sp)
                 } else {
                     comments.forEach { c ->
                         Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                                Text(c.userName, fontWeight = FontWeight.Bold, color = Color(0xFF7C4DFF), fontSize = 12.sp)
-                                val sdf = SimpleDateFormat("HH:mm", Locale.US)
-                                Text(sdf.format(Date(c.timestamp)), color = Color.White.copy(alpha = 0.4f), fontSize = 10.sp)
+                                Text(c.userName, fontWeight = FontWeight.Bold, color = Color(0xFF8F4C38), fontSize = 12.sp)
+                                val sdf = java.text.SimpleDateFormat("HH:mm", java.util.Locale.US)
+                                Text(sdf.format(java.util.Date(c.timestamp)), color = Color(0xFF85736E), fontSize = 10.sp)
                             }
-                            Text(c.content, color = Color.White, fontSize = 13.sp)
-                            HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(top = 4.dp))
+                            Text(c.content, color = Color(0xFF1F1A18), fontSize = 13.sp)
+                            HorizontalDivider(color = Color(0xFFF5DED8), modifier = Modifier.padding(top = 4.dp))
                         }
                     }
                 }
@@ -1895,9 +2501,17 @@ fun TaskDetailPage(
                     OutlinedTextField(
                         value = commentText,
                         onValueChange = { commentText = it },
-                        placeholder = { Text("Leave team comment...") },
+                        placeholder = { Text("Leave team comment...", color = Color(0xFF85736E)) },
                         modifier = Modifier.weight(1f),
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color(0xFF1F1A18),
+                            unfocusedTextColor = Color(0xFF1F1A18),
+                            focusedBorderColor = Color(0xFF8F4C38),
+                            unfocusedBorderColor = Color(0xFFD5C2BE),
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(12.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     IconButton(
@@ -1908,7 +2522,7 @@ fun TaskDetailPage(
                             }
                         }
                     ) {
-                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send comments", tint = Color(0xFF7C4DFF))
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send comments", tint = Color(0xFF8F4C38))
                     }
                 }
             }

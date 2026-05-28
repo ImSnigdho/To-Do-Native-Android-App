@@ -100,16 +100,20 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
         filtered = when (filter.view) {
             "Inbox" -> {
-                // Default landing area for uncategorized or non-completed tasks
-                filtered.filter { it.projectId == null && !it.isCompleted }
+                // Default landing area for uncategorized or non-completed tasks, plus completed ones completed today
+                filtered.filter { 
+                    it.projectId == null && (!it.isCompleted || (it.isCompleted && it.completedDate != null && it.completedDate >= todayStart))
+                }
             }
             "Today" -> {
+                // Active tasks due today, plus completed tasks completed today
                 filtered.filter {
-                    it.dueDate != null && it.dueDate >= todayStart && it.dueDate < tomorrowStart && !it.isCompleted
+                    (it.dueDate != null && it.dueDate >= todayStart && it.dueDate < tomorrowStart) ||
+                    (it.isCompleted && it.completedDate != null && it.completedDate >= todayStart)
                 }
             }
             "Upcoming" -> {
-                // Rolling future rolling 7 or 30 days
+                // Rolling future rolling 7 or 30 days (excluding completed)
                 filtered.filter {
                     it.dueDate != null && it.dueDate >= todayStart && !it.isCompleted
                 }
@@ -178,6 +182,48 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun getTaskById(id: Long): Task? = repository.getTaskById(id)
 
+    suspend fun addTaskAndGetId(
+        title: String,
+        description: String = "",
+        dueDate: Long? = null,
+        dueTime: String? = null,
+        priority: Int = 4,
+        projectId: Long? = null,
+        tagId: Long? = null,
+        recurrence: String = "NONE",
+        locationName: String? = null,
+        locationLatitude: Double? = null,
+        locationLongitude: Double? = null,
+        locationTriggerOnEnter: Boolean = true
+    ): Long {
+        val task = Task(
+            title = title,
+            description = description,
+            dueDate = dueDate,
+            dueTime = dueTime,
+            priority = priority,
+            projectId = projectId ?: _selectedProjectId.value,
+            tagId = tagId,
+            recurrence = recurrence,
+            locationName = locationName,
+            locationLatitude = locationLatitude,
+            locationLongitude = locationLongitude,
+            locationTriggerOnEnter = locationTriggerOnEnter
+        )
+        return repository.insertTask(task)
+    }
+
+    suspend fun addTaskWithNlpAndGetId(text: String, defaultProjectId: Long? = null): Long {
+        val parsed = NlpParser.parse(text)
+        return addTaskAndGetId(
+            title = parsed.title,
+            dueDate = parsed.dueDate,
+            dueTime = parsed.dueTime,
+            priority = parsed.priority,
+            projectId = defaultProjectId ?: _selectedProjectId.value
+        )
+    }
+
     fun addTask(
         title: String,
         description: String = "",
@@ -193,7 +239,7 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         locationTriggerOnEnter: Boolean = true
     ) {
         viewModelScope.launch {
-            val task = Task(
+            addTaskAndGetId(
                 title = title,
                 description = description,
                 dueDate = dueDate,
@@ -207,7 +253,6 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
                 locationLongitude = locationLongitude,
                 locationTriggerOnEnter = locationTriggerOnEnter
             )
-            repository.insertTask(task)
         }
     }
 
@@ -216,15 +261,7 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun addTaskWithNlp(text: String, defaultProjectId: Long? = null) {
         viewModelScope.launch {
-            val parsed = NlpParser.parse(text)
-            // Save parsed task
-            addTask(
-                title = parsed.title,
-                dueDate = parsed.dueDate,
-                dueTime = parsed.dueTime,
-                priority = parsed.priority,
-                projectId = defaultProjectId ?: _selectedProjectId.value
-            )
+            addTaskWithNlpAndGetId(text, defaultProjectId)
         }
     }
 
@@ -232,7 +269,8 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val updated = task.copy(
                 isCompleted = !task.isCompleted,
-                completedTimestamp = if (!task.isCompleted) System.currentTimeMillis() else null
+                completedTimestamp = if (!task.isCompleted) System.currentTimeMillis() else null,
+                completedDate = if (!task.isCompleted) System.currentTimeMillis() else null
             )
             repository.updateTask(updated)
         }

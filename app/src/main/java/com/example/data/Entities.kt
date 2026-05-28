@@ -29,6 +29,7 @@ data class Task(
     val tagId: Long? = null, // Associated tag
     val recurrence: String = "NONE", // "NONE", "DAILY", "WEEKLY", "MONTHLY", "WEEKDAYS"
     val completedTimestamp: Long? = null,
+    val completedDate: Long? = null, // Timestamp when completed
     val locationName: String? = null,
     val locationLatitude: Double? = null,
     val locationLongitude: Double? = null,
