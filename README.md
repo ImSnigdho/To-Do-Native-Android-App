@@ -1,18 +1,71 @@
 
-# Run and deploy your AI Studio app
+markdown_content = """# 📝 Android To-Do List App
 
-This contains everything you need to run your app locally.
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Platform](https://img.shields.io/badge/platform-Android-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-View your app in AI Studio: https://ai.studio/apps/27357100-8e3f-4972-b63a-2bd968eda8a3
+A fully-featured, modern Android To-Do List application designed to boost productivity. Built with clean architecture, intuitive UI, and powerful organization tools.
 
-## Run Locally
+## ✨ Features
 
-**Prerequisites:**  [Android Studio](https://developer.android.com/studio)
+### 1. Authentication & Onboarding
+* **Splash Screen:** Engaging initial load branding.
+* **Onboarding Carousel:** Quick feature highlights for new users.
+* **Authentication:** Email/Password, Google SSO, and Offline Guest Mode.
+* **Password Management:** Secure password reset flows.
 
+### 2. Global Navigation
+* **Bottom Navigation:** Quick access to Tasks, Calendar, Search, and Settings.
+* **Navigation Drawer:** Access to projects, tags, and profile.
+* **Floating Action Button (FAB):** Persistent quick-add task button.
+* **Global Search:** Keyword search across all tasks and tags.
 
-1. Open Android Studio
-2. Select **Open** and choose the directory containing this project
-3. Allow Android Studio to fix any incompatibilities as it imports the project.
-4. Create a file named `.env` in the project directory and set `GEMINI_API_KEY` in that file to your Gemini API key (see `.env.example` for an example)
-5. Remove this line from the app's `build.gradle.kts` file: `signingConfig = signingConfigs.getByName("debugConfig")`
-6. Run the app on an emulator or physical device
+### 3. Task Creation & Editing
+* **Quick Add:** Rapid text entry.
+* **Natural Language Processing:** Auto-parsing of dates/times (e.g., "Tomorrow at 5 PM").
+* **Voice Input:** Dictate tasks easily via microphone integration.
+* **Detailed View:** Subtasks, Due Dates, Priority Levels (P1-P4), Attachments, and Geofencing (location-based triggers).
+
+### 4. Organization & Views
+* **Projects & Tags:** Folder grouping and color-coded labeling.
+* **Smart Views:** Inbox, Today, Upcoming (7/30 days), and Completed.
+* **Sorting:** By date, priority, alphabetical, or custom drag-and-drop.
+
+### 5. Reminders & Notifications
+* **Smart Alerts:** Push notifications, pre-reminders, and snooze functionality.
+* **Recurring Tasks:** Flexible daily, weekly, or custom repetition rules.
+* **Daily Digest:** Morning agenda summaries.
+
+### 6. Collaboration
+* **List Sharing:** Invite users via email or secure link.
+* **Delegation:** Assign tasks to team members.
+* **Task Comments:** Threaded discussions and complete activity logs.
+
+### 7. App Settings
+* **Appearance:** Material You dynamic colors, Light/Dark mode, custom accents.
+* **Preferences:** Start of week, time formats, default launch screens.
+* **Data Management:** Cloud sync, offline mode, and CSV/JSON export.
+
+### 8. Android Integrations
+* **Widgets:** Interactive home screen lists and quick-add shortcuts.
+* **Quick Settings Tile:** Add tasks directly from the notification shade.
+* **Share Intent:** Send text/links from other apps (like Chrome) directly to the app to create tasks.
+
+## 🛠️ Tech Stack (Recommended)
+* **Language:** Kotlin
+* **UI:** Jetpack Compose & Material 3
+* **Architecture:** MVVM / Clean Architecture
+* **Database:** Room (Local Storage), Firebase/Supabase (Remote Sync)
+* **Asynchronous:** Coroutines & Flow
+* **Dependency Injection:** Hilt 
+
+## 🚀 Getting Started
+
+### Prerequisites
+* Android Studio (Latest Version)
+* JDK 17+
+* Android SDK Minimum API 24 (Target API 34+)
+
+### Installation
+1. Clone the repository:
