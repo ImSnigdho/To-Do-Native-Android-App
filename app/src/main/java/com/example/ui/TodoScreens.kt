@@ -2635,61 +2635,69 @@ fun TaskDetailPage(
 
     @Composable
     fun TaskStatisticsGraph(completed: Int, remaining: Int) {
-        val total = completed + remaining
-        val percentage = if (total > 0) (completed.toFloat() / total * 100).toInt() else 0
-        val progress = if (total > 0) completed.toFloat() / total.toFloat() else 0f
+        val totalTasks = completed + remaining
         
+        // 1. SAFE MATH: Prevent division by zero and force Float division
+        val targetProgress = if (totalTasks > 0) {
+            completed.toFloat() / totalTasks.toFloat()
+        } else {
+            0f
+        }
+        
+        val percentage = (targetProgress * 100).toInt()
+
+        // 2. HARDCORE UPGRADE: Smooth loading animation
+        var animationPlayed by remember { mutableStateOf(false) }
+        val animatedProgress by androidx.compose.animation.core.animateFloatAsState(
+            targetValue = if (animationPlayed) targetProgress else 0f,
+            animationSpec = androidx.compose.animation.core.tween(durationMillis = 1000), // 1-second animation
+            label = "progressAnimation"
+        )
+
+        LaunchedEffect(targetProgress) {
+            animationPlayed = true
+        }
+
         val primaryColor = MaterialTheme.colorScheme.primary
-        val surfaceVariantColor = MaterialTheme.colorScheme.surfaceVariant
-    
-        Box(
-            modifier = Modifier
-                .size(160.dp)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
-                val strokeWidth = 16.dp.toPx()
-                val arcSize = kotlin.math.max(0f, size.minDimension - strokeWidth)
-                if (arcSize <= 0f) return@Canvas
-                
-                val topLeft = androidx.compose.ui.geometry.Offset(strokeWidth / 2, strokeWidth / 2)
-                
-                // Draw background (remaining) ring
+        val trackColor = MaterialTheme.colorScheme.surfaceVariant
+
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(160.dp)) {
+            androidx.compose.foundation.Canvas(modifier = Modifier.size(140.dp)) {
+                // 3. Draw the background track (Empty/Remaining)
                 drawArc(
-                    color = surfaceVariantColor,
+                    color = trackColor,
                     startAngle = 0f,
                     sweepAngle = 360f,
                     useCenter = false,
-                    topLeft = topLeft,
-                    size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
-                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 16.dp.toPx(), cap = androidx.compose.ui.graphics.StrokeCap.Round)
                 )
-                
-                // Draw progress (completed) ring
-                drawArc(
-                    color = primaryColor,
-                    startAngle = -90f,
-                    sweepAngle = if (total > 0) (completed.toFloat() / total) * 360f else 0f,
-                    useCenter = false,
-                    topLeft = topLeft,
-                    size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
-                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
-                )
+
+                // 4. Draw the filled progress (Completed)
+                if (animatedProgress > 0f) {
+                    drawArc(
+                        color = primaryColor,
+                        startAngle = -90f, // Start at 12 o'clock
+                        sweepAngle = 360f * animatedProgress,
+                        useCenter = false,
+                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 16.dp.toPx(), cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                    )
+                }
             }
             
+            // 5. Center the Percentage Text
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "${percentage}%",
-                    color = MaterialTheme.colorScheme.onSurface,
+                    text = "$percentage%",
+                    style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp
+                    color = MaterialTheme.colorScheme.onSurface
                 )
+                // Added a small subtitle to show the raw numbers (optional, but looks great)
                 Text(
-                    text = if (total == completed && total > 0) "Done!" else "Completed",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 12.sp
+                    text = "$completed / $totalTasks tasks",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        }
     }
-}
