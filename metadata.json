@@ -1,0 +1,6 @@
+{
+  "name": "To-Do App",
+  "description": "A comprehensive, high-fidelity Material 3 Android To-Do application featuring lists, smart views, natural language task parsing, voice input, and Room database persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
