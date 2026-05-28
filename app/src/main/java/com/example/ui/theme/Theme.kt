@@ -10,25 +10,32 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme =
-  darkColorScheme(primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80)
+import androidx.compose.ui.graphics.Color
 
-private val LightColorScheme =
-  lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+private val ProfessionalLightColorScheme = lightColorScheme(
+    primary = Color(0xFF8F4C38),
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-  )
+    primaryContainer = Color(0xFFFFDBD1),
+    onPrimaryContainer = Color(0xFF8F4C38),
+
+    secondary = Color(0xFF514441),
+    secondaryContainer = Color(0xFFF5DED8),
+    onSecondaryContainer = Color(0xFF514441),
+
+    tertiary = Color(0xFFD9411E),
+    tertiaryContainer = Color(0xFFFFDAD4),
+    onTertiaryContainer = Color(0xFFD9411E),
+
+    background = Color(0xFFFDF8F6),
+    onBackground = Color(0xFF1F1A18),
+
+    surface = Color.White,
+    onSurface = Color(0xFF1F1A18),
+    surfaceVariant = Color(0xFFF5DED8),
+    onSurfaceVariant = Color(0xFF514441),
+    
+    outline = Color(0xFF85736E)
+)
 
 @Composable
 fun MyApplicationTheme(
@@ -37,16 +44,5 @@ fun MyApplicationTheme(
   dynamicColor: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  val colorScheme =
-    when {
-      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-        val context = LocalContext.current
-        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-      }
-
-      darkTheme -> DarkColorScheme
-      else -> LightColorScheme
-    }
-
-  MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
+  MaterialTheme(colorScheme = ProfessionalLightColorScheme, typography = Typography, content = content)
 }

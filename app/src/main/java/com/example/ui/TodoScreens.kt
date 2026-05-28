@@ -611,7 +611,7 @@ fun MainAppShell(
             drawerContent = {
                 ModalDrawerSheet(
                     modifier = Modifier.width(300.dp),
-                    drawerContainerColor = Color(0xFF161521)
+                    drawerContainerColor = Color(0xFFFDF8F6)
                 ) {
                     Column(
                         modifier = Modifier
@@ -629,7 +629,7 @@ fun MainAppShell(
                             Box(
                                 modifier = Modifier
                                     .size(48.dp)
-                                    .background(Color(0xFF7C4DFF), shape = CircleShape),
+                                    .background(Color(0xFF8F4C38), shape = CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
@@ -643,26 +643,26 @@ fun MainAppShell(
                             Column {
                                 Text(
                                     text = if (isGuestMode) "Guest Profile" else userEmail ?: "Premium User",
-                                    color = Color.White,
+                                    color = Color(0xFF1F1A18),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
                                 Text(
                                     text = if (isGuestMode) "Offline sync" else "Cloud Sync Active",
-                                    color = Color.White.copy(alpha = 0.5f),
+                                    color = Color(0xFF514441),
                                     fontSize = 12.sp
                                 )
                             }
                         }
 
-                        HorizontalDivider(color = Color.White.copy(alpha = 0.1f), modifier = Modifier.padding(vertical = 12.dp))
+                        HorizontalDivider(color = Color(0xFF85736E).copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 12.dp))
 
                         // Smart Views Navigation lists
                         Text(
                             "Smart Filters",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White.copy(alpha = 0.4f),
+                            color = Color(0xFF514441),
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
 
@@ -676,17 +676,18 @@ fun MainAppShell(
                         smartItems.forEach { (viewKey, label, icon) ->
                             val active = smartView == viewKey && selectedProjectId == null && selectedTagId == null
                             NavigationDrawerItem(
-                                label = { Text(label, color = if (active) Color.White else Color.White.copy(alpha = 0.7f)) },
+                                label = { Text(label, color = if (active) Color(0xFF8F4C38) else Color(0xFF514441)) },
                                 selected = active,
                                 onClick = {
                                     todoViewModel.setSmartView(viewKey)
                                     currentBottomTab = "Tasks"
                                     coroutineScope.launch { drawerState.close() }
                                 },
-                                icon = { Icon(icon, contentDescription = null, tint = if (active) Color.White else Color.White.copy(alpha = 0.5f)) },
+                                icon = { Icon(icon, contentDescription = null, tint = if (active) Color(0xFF8F4C38) else Color(0xFF514441)) },
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = Color(0xFF7C4DFF)
+                                    selectedContainerColor = Color(0xFFFFDBD1),
+                                    unselectedContainerColor = Color.Transparent
                                 )
                             )
                         }
@@ -703,10 +704,10 @@ fun MainAppShell(
                                 "Projects",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color.White.copy(alpha = 0.4f)
+                                color = Color(0xFF514441)
                             )
                             IconButton(onClick = { showAddProjectDialog = true }, modifier = Modifier.size(24.dp)) {
-                                Icon(Icons.Default.Add, contentDescription = "Add Project", tint = Color(0xFF00B0FF), modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Add, contentDescription = "Add Project", tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
                             }
                         }
 
@@ -718,7 +719,7 @@ fun MainAppShell(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(if (active) Color(0xFF00B0FF).copy(alpha = 0.15f) else Color.Transparent)
+                                        .background(if (active) Color(0xFF8F4C38).copy(alpha = 0.15f) else Color.Transparent)
                                         .clickable {
                                             todoViewModel.selectProject(project.id)
                                             currentBottomTab = "Tasks"
@@ -734,20 +735,20 @@ fun MainAppShell(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
                                         text = project.name,
-                                        color = if (active) Color.White else Color.White.copy(alpha = 0.8f),
+                                        color = if (active) Color(0xFF8F4C38) else Color(0xFF1F1A18),
                                         modifier = Modifier.weight(1f)
                                     )
                                     IconButton(
                                         onClick = { todoViewModel.deleteProject(project) },
                                         modifier = Modifier.size(20.dp)
                                     ) {
-                                        Icon(Icons.Default.Delete, contentDescription = null, tint = Color.White.copy(alpha = 0.4f), modifier = Modifier.size(14.dp))
+                                        Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
                                     }
                                 }
                             }
                         }
 
-                        HorizontalDivider(color = Color.White.copy(alpha = 0.1f), modifier = Modifier.padding(vertical = 12.dp))
+                        HorizontalDivider(color = Color(0xFF85736E).copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 12.dp))
 
                         // Tags Configuration section
                         Row(
@@ -759,10 +760,10 @@ fun MainAppShell(
                                 "Tags & Labels",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color.White.copy(alpha = 0.4f)
+                                color = Color(0xFF514441)
                             )
                             IconButton(onClick = { showAddTagDialog = true }, modifier = Modifier.size(24.dp)) {
-                                Icon(Icons.Default.Add, contentDescription = "Add Tag", tint = Color(0xFFFF9100), modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Add, contentDescription = "Add Tag", tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
                             }
                         }
 
@@ -774,7 +775,7 @@ fun MainAppShell(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(if (active) Color(0xFFFF9100).copy(alpha = 0.15f) else Color.Transparent)
+                                        .background(if (active) Color(0xFF8F4C38).copy(alpha = 0.15f) else Color.Transparent)
                                         .clickable {
                                             todoViewModel.selectTag(tag.id)
                                             currentBottomTab = "Tasks"
@@ -790,14 +791,14 @@ fun MainAppShell(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
                                         text = tag.name,
-                                        color = if (active) Color.White else Color.White.copy(alpha = 0.8f),
+                                        color = if (active) Color(0xFF8F4C38) else Color(0xFF1F1A18),
                                         modifier = Modifier.weight(1f)
                                     )
                                     IconButton(
                                         onClick = { todoViewModel.deleteTag(tag) },
                                         modifier = Modifier.size(20.dp)
                                     ) {
-                                        Icon(Icons.Default.Delete, contentDescription = null, tint = Color.White.copy(alpha = 0.4f), modifier = Modifier.size(14.dp))
+                                        Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
                                     }
                                 }
                             }
@@ -820,49 +821,56 @@ fun MainAppShell(
                                         smartView
                                     },
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.White
+                                    color = Color(0xFF1F1A18)
                                 )
                             },
                             navigationIcon = {
                                 IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
-                                    Icon(Icons.Default.Menu, contentDescription = null, tint = Color.White)
+                                    Icon(Icons.Default.Menu, contentDescription = null, tint = Color(0xFF1F1A18))
                                 }
                             },
                             actions = {
                                 IconButton(onClick = { currentBottomTab = "Search" }) {
-                                    Icon(Icons.Default.Search, contentDescription = "Search", tint = Color.White)
+                                    Icon(Icons.Default.Search, contentDescription = "Search", tint = Color(0xFF1F1A18))
                                 }
                             },
                             colors = TopAppBarDefaults.largeTopAppBarColors(
-                                containerColor = Color(0xFF0F0E17),
-                                titleContentColor = Color.White
+                                containerColor = Color(0xFFFDF8F6),
+                                titleContentColor = Color(0xFF1F1A18)
                             )
                         )
                     }
                 },
                 bottomBar = {
                     if (activeTaskIdForDetails == null) {
-                        NavigationBar(
-                            containerColor = Color(0xFF161521),
-                            modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+                        Surface(
+                            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                            color = Color(0xFFF5DED8),
+                            tonalElevation = 0.dp,
+                            shadowElevation = 0.dp
                         ) {
-                            val navItems = listOf(
-                                Triple("Tasks", "Tasks", Icons.Default.Check),
-                                Triple("Calendar", "Upcoming", Icons.Default.CalendarToday),
-                                Triple("Search", "Find Tasks", Icons.Default.Search),
-                                Triple("Settings", "Settings", Icons.Default.Settings)
-                            )
-                            navItems.forEach { (tabKey, label, icon) ->
-                                NavigationBarItem(
-                                    selected = currentBottomTab == tabKey,
-                                    onClick = { currentBottomTab = tabKey },
-                                    label = { Text(label, color = Color.White) },
-                                    icon = { Icon(icon, contentDescription = null, tint = if (currentBottomTab == tabKey) Color(0xFF7C4DFF) else Color.White.copy(alpha = 0.6f)) },
-                                    colors = NavigationBarItemDefaults.colors(
-                                        selectedIconColor = Color(0xFF7C4DFF),
-                                        indicatorColor = Color(0xFF7C4DFF).copy(alpha = 0.2f)
-                                    )
+                            NavigationBar(
+                                containerColor = Color.Transparent,
+                                modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).padding(horizontal = 8.dp)
+                            ) {
+                                val navItems = listOf(
+                                    Triple("Tasks", "Tasks", Icons.Default.Check),
+                                    Triple("Calendar", "Calendar", Icons.Default.CalendarToday),
+                                    Triple("Search", "Shared", Icons.Default.Share),
+                                    Triple("Settings", "Settings", Icons.Default.Settings)
                                 )
+                                navItems.forEach { (tabKey, label, icon) ->
+                                    NavigationBarItem(
+                                        selected = currentBottomTab == tabKey,
+                                        onClick = { currentBottomTab = tabKey },
+                                        label = { Text(label, color = Color(0xFF1F1A18), fontSize = 11.sp, fontWeight = if (currentBottomTab == tabKey) FontWeight.Bold else FontWeight.Medium) },
+                                        icon = { Icon(icon, contentDescription = null, tint = if (currentBottomTab == tabKey) Color(0xFF8F4C38) else Color(0xFF514441)) },
+                                        colors = NavigationBarItemDefaults.colors(
+                                            selectedIconColor = Color(0xFF8F4C38),
+                                            indicatorColor = Color(0xFFFFDBD1) // active tab background pill
+                                        )
+                                    )
+                                }
                             }
                         }
                     }
@@ -871,15 +879,16 @@ fun MainAppShell(
                     if (activeTaskIdForDetails == null) {
                         FloatingActionButton(
                             onClick = { showQuickAddDialog = true },
-                            containerColor = Color(0xFF7C4DFF),
-                            contentColor = Color.White,
+                            containerColor = Color(0xFFFFDBCC),
+                            contentColor = Color(0xFF8F4C38),
+                            shape = RoundedCornerShape(16.dp),
                             modifier = Modifier.testTag("fab_add_task")
                         ) {
                             Icon(Icons.Default.Add, contentDescription = "Quick Add Task")
                         }
                     }
                 },
-                containerColor = Color(0xFF0F0E17)
+                containerColor = Color(0xFFFDF8F6)
             ) { innerPadding ->
                 Box(
                     modifier = Modifier
@@ -1054,16 +1063,16 @@ fun TasksTabScreen(
         ) {
             Text(
                 text = "${tasks.size} Available Tasks",
-                color = Color.White.copy(alpha = 0.5f),
+                color = Color(0xFF514441),
                 fontSize = 13.sp
             )
 
             Box {
                 Button(
                     onClick = { showSortMenu = true },
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f)),
-                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1F1A18)),
+                    border = BorderStroke(1.dp, Color(0xFFF5DED8)),
+                    shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Icon(Icons.Default.FilterList, contentDescription = null, modifier = Modifier.size(16.dp))
@@ -1074,11 +1083,11 @@ fun TasksTabScreen(
                 DropdownMenu(
                     expanded = showSortMenu,
                     onDismissRequest = { showSortMenu = false },
-                    modifier = Modifier.background(Color(0xFF1E1D2D))
+                    modifier = Modifier.background(Color.White)
                 ) {
                     listOf("Date", "Priority", "Alpha", "Custom").forEach { opt ->
                         DropdownMenuItem(
-                            text = { Text(opt, color = Color.White) },
+                            text = { Text(opt, color = Color(0xFF1F1A18)) },
                             onClick = {
                                 viewModel.setSortOrder(opt)
                                 showSortMenu = false
@@ -1102,18 +1111,18 @@ fun TasksTabScreen(
                     Icon(
                         imageVector = Icons.Default.PlaylistAddCheck,
                         contentDescription = "Inbox empty",
-                        tint = Color.White.copy(alpha = 0.2f),
+                        tint = Color(0xFF85736E).copy(alpha = 0.3f),
                         modifier = Modifier.size(112.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "Everything matches! All tasks checked.",
-                        color = Color.White.copy(alpha = 0.5f),
-                        fontWeight = FontWeight.Bold
+                        color = Color(0xFF514441),
+                        fontWeight = FontWeight.SemiBold
                     )
                     Text(
                         text = "Use '+' to add something fresh.",
-                        color = Color.White.copy(alpha = 0.3f),
+                        color = Color(0xFF85736E),
                         fontSize = 12.sp,
                         modifier = Modifier.padding(top = 4.dp)
                     )
@@ -1146,10 +1155,8 @@ fun TaskListItemCard(
     onClick: () -> Unit
 ) {
     val borderTint = when (task.priority) {
-        1 -> Color.Red
-        2 -> Color(0xFFFF5722)
-        3 -> Color(0xFFFFEB3B)
-        else -> Color.White.copy(alpha = 0.1f)
+        1 -> Color(0xFFD9411E)
+        else -> Color(0xFF85736E)
     }
 
     Surface(
@@ -1157,44 +1164,58 @@ fun TaskListItemCard(
             .fillMaxWidth()
             .testTag("task_item_card_${task.id}")
             .clickable(onClick = onClick),
-        color = Color(0xFF1E1D2D),
-        shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(1.dp, borderTint.copy(alpha = 0.5f))
+        color = Color.White,
+        shape = RoundedCornerShape(24.dp), // rounded-3xl
+        border = BorderStroke(1.dp, Color(0xFFF5DED8))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(16.dp),
+            verticalAlignment = Alignment.Top
         ) {
             IconButton(
                 onClick = onCheckToggle,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(32.dp).padding(top = 2.dp)
             ) {
                 Icon(
                     imageVector = if (task.isCompleted) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
                     contentDescription = "Check task status",
-                    tint = if (task.isCompleted) Color(0xFF00E676) else Color.White.copy(alpha = 0.6f),
+                    tint = borderTint,
                     modifier = Modifier.size(24.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = task.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (task.isCompleted) Color.White.copy(alpha = 0.4f) else Color.White,
-                    textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null
-                )
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
+                    Text(
+                        text = task.title,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color(0xFF1F1A18),
+                        textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+                    
+                    if (task.priority == 1) {
+                         Text(
+                             text = "P1",
+                             fontSize = 10.sp,
+                             fontWeight = FontWeight.Bold,
+                             color = Color(0xFFD9411E),
+                             modifier = Modifier.background(Color(0xFFFFDAD4), RoundedCornerShape(4.dp)).padding(horizontal = 6.dp, vertical = 2.dp)
+                         )
+                    }
+                }
+                
                 if (task.description.isNotBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = task.description,
                         fontSize = 13.sp,
-                        color = Color.White.copy(alpha = 0.5f),
+                        color = Color(0xFF514441),
                         maxLines = 2
                     )
                 }
@@ -1208,22 +1229,22 @@ fun TaskListItemCard(
                     ) {
                         task.dueDate?.let { due ->
                             val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.US)
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color(0xFF00B0FF), modifier = Modifier.size(12.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color(0xFFF5DED8), RoundedCornerShape(12.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) {
+                                Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color(0xFF514441), modifier = Modifier.size(12.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
                                     text = formatter.format(Date(due)) + (task.dueTime?.let { " at $it" } ?: ""),
                                     fontSize = 11.sp,
-                                    color = Color(0xFF00B0FF)
+                                    color = Color(0xFF514441)
                                 )
                             }
                         }
 
                         if (task.recurrence != "NONE") {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Sync, contentDescription = null, tint = Color(0xFF00E676), modifier = Modifier.size(12.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color(0xFFF5DED8), RoundedCornerShape(12.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) {
+                                Icon(Icons.Default.Sync, contentDescription = null, tint = Color(0xFF8F4C38), modifier = Modifier.size(12.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text(task.recurrence, fontSize = 11.sp, color = Color(0xFF00E676))
+                                Text(task.recurrence, fontSize = 11.sp, color = Color(0xFF8F4C38))
                             }
                         }
                     }
@@ -1231,7 +1252,7 @@ fun TaskListItemCard(
             }
 
             // Arrow Indicator
-            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Color.White.copy(alpha = 0.3f))
+            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.5f))
         }
     }
 }
@@ -1253,15 +1274,15 @@ fun CalendarTabScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Weekly Schedule Flow", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text("Weekly Schedule Flow", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1F1A18))
         Spacer(modifier = Modifier.height(14.dp))
 
         if (upcomingTasks.isEmpty()) {
             Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.EventBusy, contentDescription = null, tint = Color.White.copy(alpha = 0.2f), modifier = Modifier.size(96.dp))
+                    Icon(Icons.Default.EventBusy, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.3f), modifier = Modifier.size(96.dp))
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text("No future schedules registered.", color = Color.White.copy(alpha = 0.4f))
+                    Text("No future schedules registered.", color = Color(0xFF514441))
                 }
             }
         } else {
@@ -1296,12 +1317,12 @@ fun SearchTabScreen(
         OutlinedTextField(
             value = search,
             onValueChange = { viewModel.setSearchQuery(it) },
-            placeholder = { Text("Search title, priority, notes...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.White.copy(alpha = 0.6f)) },
+            placeholder = { Text("Search title, priority, notes...", color = Color(0xFF514441)) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFF514441)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag("search_field"),
-            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color(0xFF1F1A18), unfocusedTextColor = Color(0xFF1F1A18)),
             shape = RoundedCornerShape(12.dp)
         )
 
@@ -1309,18 +1330,18 @@ fun SearchTabScreen(
 
         if (search.isBlank()) {
             // Suggest tags keywords search
-            Text("Suggested Keywords", fontSize = 12.sp, color = Color.White.copy(alpha = 0.5f))
+            Text("Suggested Keywords", fontSize = 12.sp, color = Color(0xFF514441))
             Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
                 val suggestions = listOf("Shop", "Meeting", "P1", "Groceries")
                 suggestions.forEach { tag ->
                     Box(
                         modifier = Modifier
-                            .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                            .background(Color(0xFFFFDBD1), RoundedCornerShape(8.dp))
                             .clickable { viewModel.setSearchQuery(tag) }
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Text(tag, color = Color.White, fontSize = 12.sp)
+                        Text(tag, color = Color(0xFF8F4C38), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -1356,20 +1377,20 @@ fun SettingsTabScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        Text("Account Section", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White.copy(alpha = 0.4f))
+        Text("Account Section", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
         Spacer(modifier = Modifier.height(12.dp))
 
-        Surface(color = Color(0xFF1E1D2D), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = Color.White, border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = if (isGuestMode) "Logged in as Guest" else "Logged in as: $userEmail",
-                    color = Color.White,
+                    color = Color(0xFF1F1A18),
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = { authViewModel.logout() },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red.copy(alpha = 0.8f))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9411E))
                 ) {
                     Text("Logout and Clear Profile", color = Color.White)
                 }
@@ -1378,17 +1399,17 @@ fun SettingsTabScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Appearance Options", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White.copy(alpha = 0.4f))
+        Text("Appearance Options", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
         Spacer(modifier = Modifier.height(12.dp))
 
-        Surface(color = Color(0xFF1E1D2D), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = Color.White, border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Dark Theme Default", color = Color.White)
+                    Text("Dark Theme Default", color = Color(0xFF1F1A18))
                     Switch(
                         checked = settings.isDarkMode ?: true,
                         onCheckedChange = { todoViewModel.updateThemeMode(it) }
@@ -1396,7 +1417,7 @@ fun SettingsTabScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Custom Accent Style", fontSize = 14.sp, color = Color.White.copy(alpha = 0.6f))
+                Text("Custom Accent Style", fontSize = 14.sp, color = Color(0xFF514441))
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     val colors = listOf("#6750A4", "#FF5722", "#4CAF50", "#2196F3", "#E91E63")
@@ -1405,7 +1426,7 @@ fun SettingsTabScreen(
                             modifier = Modifier
                                 .size(28.dp)
                                 .background(Color(android.graphics.Color.parseColor(hex)), shape = CircleShape)
-                                .border(if (settings.primaryColorHex == hex) 2.dp else 0.dp, Color.White, CircleShape)
+                                .border(if (settings.primaryColorHex == hex) 2.dp else 0.dp, Color(0xFF1F1A18), CircleShape)
                                 .clickable { todoViewModel.updateAccentColor(hex) }
                         )
                     }
@@ -1415,7 +1436,7 @@ fun SettingsTabScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Backup & Database Sync", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White.copy(alpha = 0.4f))
+        Text("Backup & Database Sync", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
         Spacer(modifier = Modifier.height(12.dp))
 
         Button(
@@ -1435,9 +1456,9 @@ fun SettingsTabScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        Text("About & Support", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White.copy(alpha = 0.4f))
+        Text("About & Support", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Version 1.0.0 (May 2026)\nBuilt on Android Kotlin Compose Core.\nOffline & Online Intelligent NLP Systems.", fontSize = 12.sp, color = Color.White.copy(alpha = 0.4f))
+        Text("Version 1.0.0 (May 2026)\nBuilt on Android Kotlin Compose Core.\nOffline & Online Intelligent NLP Systems.", fontSize = 12.sp, color = Color(0xFF85736E))
     }
 }
 
@@ -1458,8 +1479,8 @@ fun QuickAddTaskDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            color = Color(0xFF1E1D2D),
-            shape = RoundedCornerShape(16.dp),
+            color = Color.White,
+            shape = RoundedCornerShape(24.dp),
             modifier = Modifier.fillMaxWidth().padding(16.dp)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
@@ -1467,16 +1488,16 @@ fun QuickAddTaskDialog(
                     text = "Quick Task Record",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color(0xFF1F1A18)
                 )
                 Spacer(modifier = Modifier.height(14.dp))
 
                 OutlinedTextField(
                     value = taskText,
                     onValueChange = { taskText = it },
-                    placeholder = { Text("E.g., Buy bread tomorrow at 6 PM P1", color = Color.White.copy(alpha = 0.4f)) },
+                    placeholder = { Text("E.g., Buy bread tomorrow at 6 PM P1", color = Color(0xFF514441)) },
                     modifier = Modifier.fillMaxWidth().testTag("quick_add_text_input"),
-                    colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White),
+                    colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color(0xFF1F1A18), unfocusedTextColor = Color(0xFF1F1A18)),
                     maxLines = 3
                 )
 
@@ -1488,7 +1509,7 @@ fun QuickAddTaskDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Auto Date NLP Parser", fontSize = 13.sp, color = Color.White.copy(alpha = 0.7f))
+                    Text("Auto Date NLP Parser", fontSize = 13.sp, color = Color(0xFF1F1A18))
                     Switch(checked = nlpEnabled, onCheckedChange = { nlpEnabled = it })
                 }
 
@@ -1506,13 +1527,13 @@ fun QuickAddTaskDialog(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1F1A18)),
+                    border = BorderStroke(1.dp, Color(0xFFF5DED8))
                 ) {
                     Icon(
                         imageVector = if (isSimulatingVoice) Icons.Default.VolumeUp else Icons.Default.Mic,
                         contentDescription = "Voice dictation recording",
-                        tint = if (isSimulatingVoice) Color.Red else Color.White
+                        tint = if (isSimulatingVoice) Color.Red else Color(0xFF1F1A18)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(if (isSimulatingVoice) "Recording voice..." else "Tap to Dictate (Voice)")
@@ -1521,7 +1542,7 @@ fun QuickAddTaskDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = onDismiss) { Text("Cancel") }
+                    TextButton(onClick = onDismiss, colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFF514441))) { Text("Cancel") }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(
                         onClick = {
@@ -1534,9 +1555,9 @@ fun QuickAddTaskDialog(
                             }
                             onDismiss()
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7C4DFF))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8F4C38))
                     ) {
-                        Text("Add Task")
+                        Text("Add Task", color = Color.White)
                     }
                 }
             }
