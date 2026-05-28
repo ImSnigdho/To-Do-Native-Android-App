@@ -52,11 +52,16 @@ fun TodoAppShell(
     val isLoggedIn by authViewModel.isLoggedIn.collectAsStateWithLifecycle()
     val isGuestMode by authViewModel.isGuestMode.collectAsStateWithLifecycle()
 
+    var splashFinished by remember { mutableStateOf(false) }
     var currentScreen by remember { mutableStateOf("Splash") }
 
-    LaunchedEffect(currentScreen) {
-        if (currentScreen == "Splash") {
-            delay(1800) // Beautiful cinematic intro timing
+    LaunchedEffect(Unit) {
+        delay(1800) // Beautiful cinematic intro timing
+        splashFinished = true
+    }
+
+    LaunchedEffect(splashFinished, onboardingCompleted, isLoggedIn, isGuestMode) {
+        if (splashFinished) {
             currentScreen = when {
                 !onboardingCompleted -> "Onboarding"
                 !isLoggedIn && !isGuestMode -> "Auth"
