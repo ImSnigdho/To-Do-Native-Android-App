@@ -447,6 +447,39 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         sb.append("}")
         return sb.toString()
     }
+
+    // Cloud Synchronization Methods via Firebase Realtime Database
+    private val firebaseSyncManager = com.example.data.FirebaseSyncManager(repository)
+
+    fun syncDataToCloud(email: String, onComplete: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val success = firebaseSyncManager.pushLocalTasksToCloud(email)
+                if (success) {
+                    onComplete(true, "Successfully pushed tasks to Firebase.")
+                } else {
+                    onComplete(false, "Cloud sync failed. Check your network or Firebase rules.")
+                }
+            } catch (e: Exception) {
+                onComplete(false, "Sync failed: \${e.message}")
+            }
+        }
+    }
+
+    fun syncDataFromCloud(email: String, onComplete: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val success = firebaseSyncManager.pullCloudTasksToLocal(email)
+                if (success) {
+                    onComplete(true, "Successfully restored tasks from Firebase.")
+                } else {
+                    onComplete(false, "Restore failed. Check your network or Firebase rules.")
+                }
+            } catch (e: Exception) {
+                onComplete(false, "Restore failed: \${e.message}")
+            }
+        }
+    }
 }
 
 class TodoViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

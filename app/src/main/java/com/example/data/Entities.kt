@@ -1,7 +1,9 @@
 package com.example.data
 
 import androidx.room.*
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "projects")
 data class Project(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -16,6 +18,7 @@ data class Tag(
     val color: Int // Hex color Int
 )
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "tasks")
 data class Task(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -84,6 +87,7 @@ data class ActivityLog(
     val timestamp: Long = System.currentTimeMillis()
 )
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "app_settings")
 data class AppSettings(
     @PrimaryKey val id: Int = 1, // Singleton row

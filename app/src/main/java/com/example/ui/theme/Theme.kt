@@ -26,15 +26,40 @@ private val ProfessionalLightColorScheme = lightColorScheme(
     tertiaryContainer = Color(0xFFFFDAD4),
     onTertiaryContainer = Color(0xFFD9411E),
 
-    background = Color(0xFFFDF8F6),
+    background = Color(0xFFF7F8FA),
     onBackground = Color(0xFF1F1A18),
 
-    surface = Color.White,
+    surface = Color(0xFFF7F8FA),
     onSurface = Color(0xFF1F1A18),
     surfaceVariant = Color(0xFFF5DED8),
     onSurfaceVariant = Color(0xFF514441),
     
     outline = Color(0xFF85736E)
+)
+
+private val ProfessionalDarkColorScheme = darkColorScheme(
+    primary = Color(0xFFFFB5A0),
+    onPrimary = Color(0xFF561F0F),
+    primaryContainer = Color(0xFF723523),
+    onPrimaryContainer = Color(0xFFFFDBD1),
+
+    secondary = Color(0xFFE7C1B8),
+    secondaryContainer = Color(0xFF5D4038),
+    onSecondaryContainer = Color(0xFFF5DED8),
+
+    tertiary = Color(0xFFFFB4A5),
+    tertiaryContainer = Color(0xFF862208),
+    onTertiaryContainer = Color(0xFFFFDAD4),
+
+    background = Color(0xFF201A18),
+    onBackground = Color(0xFFEDE0DD),
+
+    surface = Color(0xFF201A18),
+    onSurface = Color(0xFFEDE0DD),
+    surfaceVariant = Color(0xFF53433F),
+    onSurfaceVariant = Color(0xFFD8C2BC),
+
+    outline = Color(0xFFA08C87)
 )
 
 @Composable
@@ -44,5 +69,6 @@ fun MyApplicationTheme(
   dynamicColor: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  MaterialTheme(colorScheme = ProfessionalLightColorScheme, typography = Typography, content = content)
+  val colorScheme = if (darkTheme) ProfessionalDarkColorScheme else ProfessionalLightColorScheme
+  MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
 }

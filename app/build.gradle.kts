@@ -4,6 +4,7 @@ plugins {
   alias(libs.plugins.google.devtools.ksp)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.secrets)
+  id("com.google.gms.google-services") version "4.4.1"
 }
 
 android {
@@ -70,6 +71,7 @@ secrets {
 dependencies {
   implementation(platform(libs.androidx.compose.bom))
   implementation(platform(libs.firebase.bom))
+  implementation("com.google.firebase:firebase-database")
   // implementation(libs.accompanist.permissions)
   implementation(libs.androidx.activity.compose)
   // implementation(libs.androidx.camera.camera2)
@@ -119,3 +121,48 @@ dependencies {
   "ksp"(libs.androidx.room.compiler)
   "ksp"(libs.moshi.kotlin.codegen)
 }
+
+tasks.register("fixColors") {
+    doLast {
+        val file = file("src/main/java/com/example/ui/TodoScreens.kt")
+        var content = file.readText()
+        content = content.replace("Color(0xFF1F1A18)", "MaterialTheme.colorScheme.onSurface")
+        content = content.replace("Color(0xFF514441)", "MaterialTheme.colorScheme.onSurfaceVariant")
+        content = content.replace("Color(0xFF85736E)", "MaterialTheme.colorScheme.onSurfaceVariant")
+        content = content.replace("Color(0xFFF5DED8)", "MaterialTheme.colorScheme.surfaceVariant")
+        content = content.replace("Color(0xFFFFDBD1)", "MaterialTheme.colorScheme.primaryContainer")
+        content = content.replace("Color(0xFFFFDBCC)", "MaterialTheme.colorScheme.secondaryContainer")
+        content = content.replace("Color(0xFFFFF1EE)", "MaterialTheme.colorScheme.surfaceVariant")
+        content = content.replace("Color(0xFF8F4C38)", "MaterialTheme.colorScheme.primary")
+        content = content.replace("Color(0xFFD9411E)", "MaterialTheme.colorScheme.error")
+        content = content.replace("Color(0xFF4C150A)", "MaterialTheme.colorScheme.onErrorContainer")
+        content = content.replace("Color(0xFFFFB4A5)", "MaterialTheme.colorScheme.errorContainer")
+        content = content.replace("Color(0xFF5D4038)", "MaterialTheme.colorScheme.outline") // Just placeholders to fix any left over
+        content = content.replace("Color(0xFFECEFF1)", "MaterialTheme.colorScheme.onSurfaceVariant")
+        content = content.replace("Color(0xFF00B0FF)", "MaterialTheme.colorScheme.primary")
+        content = content.replace("Color(0xFF2196F3)", "MaterialTheme.colorScheme.primary")
+        content = content.replace("Color(0xFF00E676)", "MaterialTheme.colorScheme.secondary")
+        content = content.replace("Color(0xFFD32F2F)", "MaterialTheme.colorScheme.error")
+        content = content.replace("Color(0xFFFF5252)", "MaterialTheme.colorScheme.error")
+        content = content.replace("Color(0xFFFDF8F6)", "MaterialTheme.colorScheme.background")
+        content = content.replace("Color(0xFF040209)", "MaterialTheme.colorScheme.background")
+        content = content.replace("Color(0xFF0F0E17)", "MaterialTheme.colorScheme.background")
+        content = content.replace("Color(0xFF7C4DFF)", "MaterialTheme.colorScheme.primary")
+        content = content.replace("Color(0xFFFFF9F8)", "MaterialTheme.colorScheme.surface")
+        
+        content = content.replace("Color.White", "MaterialTheme.colorScheme.surface")
+        content = content.replace("Color.Black", "MaterialTheme.colorScheme.onSurface")
+        content = content.replace("Color.DarkGray", "MaterialTheme.colorScheme.onSurfaceVariant")
+        content = content.replace("Color.Gray", "MaterialTheme.colorScheme.onSurfaceVariant")
+        content = content.replace("Color.LightGray", "MaterialTheme.colorScheme.surfaceVariant")
+        content = content.replace("Color.Red", "MaterialTheme.colorScheme.error")
+        content = content.replace("Color.Green", "MaterialTheme.colorScheme.secondary")
+        content = content.replace("Color.Blue", "MaterialTheme.colorScheme.primary")
+        content = content.replace("Color.Transparent", "Color.Transparent")
+        
+        content = content.replace(Regex("Color\\(0x[0-9A-Fa-f]+\\)"), "MaterialTheme.colorScheme.outline")
+        
+        file.writeText(content)
+    }
+}
+

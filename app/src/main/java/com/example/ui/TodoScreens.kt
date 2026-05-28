@@ -108,14 +108,7 @@ fun SplashScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1E1E2F),
-                        Color(0xFF0F0F1B)
-                    )
-                )
-            ),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -128,7 +121,7 @@ fun SplashScreen() {
                     .size(100.dp)
                     .background(
                         Brush.linearGradient(
-                            colors = listOf(Color(0xFF7C4DFF), Color(0xFF00B0FF))
+                            colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary)
                         ),
                         shape = RoundedCornerShape(24.dp)
                     )
@@ -138,7 +131,7 @@ fun SplashScreen() {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "App Logo Checkmark",
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(64.dp)
                 )
             }
@@ -147,14 +140,14 @@ fun SplashScreen() {
                 text = "T O D O",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
                 letterSpacing = 6.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Simplify. Organize. Achieve.",
                 fontSize = 14.sp,
-                color = Color.White.copy(alpha = 0.6f),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 letterSpacing = 2.sp
             )
         }
@@ -171,25 +164,25 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
             title = "Capture Ideas Instantly",
             desc = "Add tasks in seconds using our Quick-Add view. Type or speak your mind to organize life effortlessly.",
             icon = Icons.Default.Add,
-            accentColor = Color(0xFF7C4DFF)
+            accentColor = MaterialTheme.colorScheme.primary
         ),
         Slide(
             title = "Smart NLP Task Parsing",
             desc = "Simply type \"Buy milk tomorrow at 5 PM\" and watch the app auto-parse dates, times, and priority lists.",
             icon = Icons.Default.AutoAwesome,
-            accentColor = Color(0xFF00B0FF)
+            accentColor = MaterialTheme.colorScheme.primary
         ),
         Slide(
             title = "Deep Color-Coded Lists",
             desc = "Tag your tasks with customized labels, work boards, or grocery lists so everything coordinates beautifully.",
             icon = Icons.Default.Folder,
-            accentColor = Color(0xFFFF9100)
+            accentColor = MaterialTheme.colorScheme.outline
         ),
         Slide(
             title = "Collaborate & Discuss",
             desc = "Share task boards with teammates and coordinate instantly inside dedicated local task comment feeds.",
             icon = Icons.AutoMirrored.Filled.Comment,
-            accentColor = Color(0xFF00E676)
+            accentColor = MaterialTheme.colorScheme.secondary
         )
     )
 
@@ -198,7 +191,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF040209))
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
         Column(
@@ -214,7 +207,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = onComplete) {
-                    Text("Skip", color = Color.White.copy(alpha = 0.6f))
+                    Text("Skip", color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f))
                 }
             }
 
@@ -247,7 +240,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
                 Text(
                     text = slide.title,
                     fontSize = 24.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
@@ -255,7 +248,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
                 Text(
                     text = slide.desc,
                     fontSize = 15.sp,
-                    color = Color.White.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 16.dp),
                     lineHeight = 22.sp
@@ -277,7 +270,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
                                 .padding(4.dp)
                                 .size(width = if (i == currentSlideIndex) 20.dp else 8.dp, height = 8.dp)
                                 .clip(RoundedCornerShape(4.dp))
-                                .background(if (i == currentSlideIndex) slide.accentColor else Color.White.copy(alpha = 0.2f))
+                                .background(if (i == currentSlideIndex) slide.accentColor else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
                         )
                     }
                 }
@@ -300,7 +293,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
                         text = if (currentSlideIndex == carouselSlides.size - 1) "Get Started" else "Next",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -335,7 +328,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0F0E17))
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
@@ -350,7 +343,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = null,
-                tint = Color(0xFF7C4DFF),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(64.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -363,7 +356,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                 },
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onBackground
             )
             Text(
                 text = when {
@@ -372,7 +365,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                     else -> "Log in to check progress on your daily habits."
                 },
                 fontSize = 14.sp,
-                color = Color.White.copy(alpha = 0.6f),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 4.dp, bottom = 24.dp)
             )
@@ -381,15 +374,15 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email Address", color = Color.White.copy(alpha = 0.6f)) },
+                label = { Text("Email Address", color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag("auth_email_input"),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedBorderColor = Color(0xFF7C4DFF),
-                    unfocusedBorderColor = Color.White.copy(alpha = 0.2f)
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                 ),
                 shape = RoundedCornerShape(12.dp)
             )
@@ -399,15 +392,15 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password", color = Color.White.copy(alpha = 0.6f)) },
+                    label = { Text("Password", color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("auth_password_input"),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        focusedBorderColor = Color(0xFF7C4DFF),
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.2f)
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                     ),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -416,19 +409,19 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             // Warning and error handling alerts
             error?.let {
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(text = it, color = Color.Red, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                Text(text = it, color = MaterialTheme.colorScheme.error, fontSize = 13.sp, fontWeight = FontWeight.Bold)
             }
 
             if (forgotPasswordSent) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
-                    color = Color(0xFF00E676).copy(alpha = 0.15f),
+                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
                     shape = RoundedCornerShape(10.dp),
-                    border = BorderStroke(1.dp, Color(0xFF00E676))
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
                 ) {
                     Text(
                         text = "Recovery email has been dispatched to $email!",
-                        color = Color(0xFF00E676),
+                        color = MaterialTheme.colorScheme.secondary,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(12.dp),
@@ -459,7 +452,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                     .fillMaxWidth()
                     .height(52.dp)
                     .testTag("auth_action_button"),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7C4DFF)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
@@ -470,7 +463,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                     },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -479,14 +472,14 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             // Forgot Password and Registration toggles
             if (!forgotPasswordMode) {
                 TextButton(onClick = { forgotPasswordMode = true }) {
-                    Text("Forgot Password?", color = Color(0xFF00B0FF))
+                    Text("Forgot Password?", color = MaterialTheme.colorScheme.primary)
                 }
             } else {
                 TextButton(onClick = {
                     forgotPasswordMode = false
                     viewModel.resetForgotPassword()
                 }) {
-                    Text("Back to log in", color = Color(0xFF00B0FF))
+                    Text("Back to log in", color = MaterialTheme.colorScheme.primary)
                 }
             }
 
@@ -498,19 +491,19 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                 ) {
                     Text(
                         text = if (isRegisterState) "Already have an account?" else "Don't have an account?",
-                        color = Color.White.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                     )
                     TextButton(onClick = { isRegisterState = !isRegisterState }) {
                         Text(
                             text = if (isRegisterState) "Sign In" else "Sign Up",
-                            color = Color(0xFF7C4DFF)
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider(color = Color.White.copy(alpha = 0.1f))
+            HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f))
             Spacer(modifier = Modifier.height(16.dp))
 
             // SSO Single Sign-On and Guest Check-ins
@@ -523,9 +516,9 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                     .height(52.dp)
                     .testTag("sso_google_button"),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = Color.White
+                    contentColor = MaterialTheme.colorScheme.onBackground
                 ),
-                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Row(
@@ -535,11 +528,11 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
                         contentDescription = "Google Icon",
-                        tint = Color(0xFFECEFF1),
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text("Sign in with Google", color = Color.White)
+                    Text("Sign in with Google", color = MaterialTheme.colorScheme.onBackground)
                 }
             }
 
@@ -554,7 +547,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             ) {
                 Text(
                     text = "Continue as Guest (Local Storage)",
-                    color = Color.White.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                     textDecoration = TextDecoration.Underline,
                     fontSize = 13.sp
                 )
@@ -569,7 +562,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f))
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
                     .clickable { 
                         if (selectedEmailForLoading == null) {
                             showGoogleAccountPicker = false 
@@ -587,7 +580,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                         .fillMaxWidth()
                         .clickable(enabled = false) {}, // absorb touch events
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     tonalElevation = 8.dp
                 ) {
                     Column(
@@ -604,17 +597,17 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                CircularProgressIndicator(color = Color(0xFF7C4DFF))
+                                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     "Signing in to To-Do App...", 
-                                    color = Color(0xFF1F1A18), 
+                                    color = MaterialTheme.colorScheme.onBackground, 
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
                                 Text(
                                     selectedEmailForLoading!!, 
-                                    color = Color(0xFF85736E), 
+                                    color = MaterialTheme.colorScheme.outline, 
                                     fontSize = 14.sp,
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
@@ -629,14 +622,14 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                     text = "G",
                                     fontWeight = FontWeight.Black,
                                     fontSize = 24.sp,
-                                    color = Color(0xFF4285F4)
+                                    color = MaterialTheme.colorScheme.outline
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = "Choose an account",
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF1F1A18)
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
                             
@@ -644,15 +637,15 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                             Text(
                                 text = "to continue to To-Do App",
                                 fontSize = 14.sp,
-                                color = Color(0xFF514441),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
                             Spacer(modifier = Modifier.height(24.dp))
 
                             val accounts = listOf(
-                                Triple("Cubecraft Developer", "cubecraft627@gmail.com", Color(0xFF7C4DFF)),
-                                Triple("Cubecraft Secondary", "cubecraft.dev@gmail.com", Color(0xFF00E676)),
-                                Triple("Guest Account", "guest.user.todo@gmail.com", Color(0xFFFF5722))
+                                Triple("Cubecraft Developer", "cubecraft627@gmail.com", MaterialTheme.colorScheme.primary),
+                                Triple("Cubecraft Secondary", "cubecraft.dev@gmail.com", MaterialTheme.colorScheme.secondary),
+                                Triple("Guest Account", "guest.user.todo@gmail.com", MaterialTheme.colorScheme.outline)
                             )
 
                             Column(
@@ -664,7 +657,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                         onClick = {
                                             selectedEmailForLoading = emailStr
                                             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                                                viewModel.loginWithGoogle(emailStr)
+                                                viewModel.loginWithGoogle(emailStr, name)
                                                 onSuccess()
                                                 showGoogleAccountPicker = false
                                                 selectedEmailForLoading = null
@@ -672,8 +665,8 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                         },
                                         modifier = Modifier.fillMaxWidth(),
                                         shape = RoundedCornerShape(12.dp),
-                                        color = Color(0xFFFFF1EE),
-                                        border = BorderStroke(1.dp, Color(0xFFF5DED8))
+                                        color = MaterialTheme.colorScheme.primaryContainer,
+                                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant)
                                     ) {
                                         Row(
                                             modifier = Modifier
@@ -689,7 +682,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                             ) {
                                                 Text(
                                                     text = name.first().toString(),
-                                                    color = Color.White,
+                                                    color = MaterialTheme.colorScheme.onBackground,
                                                     fontWeight = FontWeight.Bold,
                                                     fontSize = 18.sp
                                                 )
@@ -699,12 +692,12 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                                 Text(
                                                     text = name,
                                                     fontWeight = FontWeight.SemiBold,
-                                                    color = Color(0xFF1F1A18),
+                                                    color = MaterialTheme.colorScheme.onBackground,
                                                     fontSize = 14.sp
                                                 )
                                                 Text(
                                                     text = emailStr,
-                                                    color = Color(0xFF514441),
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                     fontSize = 12.sp
                                                 )
                                             }
@@ -718,7 +711,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                             Text(
                                 text = "To continue, Google will share your name, email address, language preference and profile picture with To-Do App. Before using this app, you can review its privacy policy and terms of service.",
                                 fontSize = 11.sp,
-                                color = Color(0xFF85736E),
+                                color = MaterialTheme.colorScheme.outline,
                                 lineHeight = 16.sp
                             )
                         }
@@ -786,7 +779,7 @@ fun MainAppShell(
             drawerContent = {
                 ModalDrawerSheet(
                     modifier = Modifier.width(300.dp),
-                    drawerContainerColor = Color(0xFFFDF8F6)
+                    drawerContainerColor = MaterialTheme.colorScheme.background
                 ) {
                     Column(
                         modifier = Modifier
@@ -804,12 +797,12 @@ fun MainAppShell(
                             Box(
                                 modifier = Modifier
                                     .size(48.dp)
-                                    .background(Color(0xFF8F4C38), shape = CircleShape),
+                                    .background(MaterialTheme.colorScheme.primary, shape = CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = if (isGuestMode) "G" else userEmail?.take(1)?.uppercase() ?: "U",
-                                    color = Color.White,
+                                    color = MaterialTheme.colorScheme.onBackground,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -818,26 +811,26 @@ fun MainAppShell(
                             Column {
                                 Text(
                                     text = if (isGuestMode) "Guest Profile" else userEmail ?: "Premium User",
-                                    color = Color(0xFF1F1A18),
+                                    color = MaterialTheme.colorScheme.onBackground,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
                                 Text(
                                     text = if (isGuestMode) "Offline sync" else "Cloud Sync Active",
-                                    color = Color(0xFF514441),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontSize = 12.sp
                                 )
                             }
                         }
 
-                        HorizontalDivider(color = Color(0xFF85736E).copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 12.dp))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 12.dp))
 
                         // Smart Views Navigation lists
                         Text(
                             "Smart Filters",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF514441),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
 
@@ -851,17 +844,17 @@ fun MainAppShell(
                         smartItems.forEach { (viewKey, label, icon) ->
                             val active = smartView == viewKey && selectedProjectId == null && selectedTagId == null
                             NavigationDrawerItem(
-                                label = { Text(label, color = if (active) Color(0xFF8F4C38) else Color(0xFF514441)) },
+                                label = { Text(label, color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant) },
                                 selected = active,
                                 onClick = {
                                     todoViewModel.setSmartView(viewKey)
                                     currentBottomTab = "Tasks"
                                     coroutineScope.launch { drawerState.close() }
                                 },
-                                icon = { Icon(icon, contentDescription = null, tint = if (active) Color(0xFF8F4C38) else Color(0xFF514441)) },
+                                icon = { Icon(icon, contentDescription = null, tint = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant) },
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = Color(0xFFFFDBD1),
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                     unselectedContainerColor = Color.Transparent
                                 )
                             )
@@ -879,10 +872,10 @@ fun MainAppShell(
                                 "Projects",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF514441)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             IconButton(onClick = { showAddProjectDialog = true }, modifier = Modifier.size(24.dp)) {
-                                Icon(Icons.Default.Add, contentDescription = "Add Project", tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Add, contentDescription = "Add Project", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             }
                         }
 
@@ -894,7 +887,7 @@ fun MainAppShell(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(if (active) Color(0xFF8F4C38).copy(alpha = 0.15f) else Color.Transparent)
+                                        .background(if (active) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent)
                                         .clickable {
                                             todoViewModel.selectProject(project.id)
                                             currentBottomTab = "Tasks"
@@ -910,20 +903,20 @@ fun MainAppShell(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
                                         text = project.name,
-                                        color = if (active) Color(0xFF8F4C38) else Color(0xFF1F1A18),
+                                        color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                                         modifier = Modifier.weight(1f)
                                     )
                                     IconButton(
                                         onClick = { todoViewModel.deleteProject(project) },
                                         modifier = Modifier.size(20.dp)
                                     ) {
-                                        Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
+                                        Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
                                     }
                                 }
                             }
                         }
 
-                        HorizontalDivider(color = Color(0xFF85736E).copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 12.dp))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 12.dp))
 
                         // Tags Configuration section
                         Row(
@@ -935,10 +928,10 @@ fun MainAppShell(
                                 "Tags & Labels",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF514441)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             IconButton(onClick = { showAddTagDialog = true }, modifier = Modifier.size(24.dp)) {
-                                Icon(Icons.Default.Add, contentDescription = "Add Tag", tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Add, contentDescription = "Add Tag", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             }
                         }
 
@@ -950,7 +943,7 @@ fun MainAppShell(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(if (active) Color(0xFF8F4C38).copy(alpha = 0.15f) else Color.Transparent)
+                                        .background(if (active) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent)
                                         .clickable {
                                             todoViewModel.selectTag(tag.id)
                                             currentBottomTab = "Tasks"
@@ -966,14 +959,14 @@ fun MainAppShell(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
                                         text = tag.name,
-                                        color = if (active) Color(0xFF8F4C38) else Color(0xFF1F1A18),
+                                        color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                                         modifier = Modifier.weight(1f)
                                     )
                                     IconButton(
                                         onClick = { todoViewModel.deleteTag(tag) },
                                         modifier = Modifier.size(20.dp)
                                     ) {
-                                        Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
+                                        Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
                                     }
                                 }
                             }
@@ -996,17 +989,17 @@ fun MainAppShell(
                                         smartView
                                     },
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF1F1A18)
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
                             },
                             navigationIcon = {
                                 IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
-                                    Icon(Icons.Default.Menu, contentDescription = null, tint = Color(0xFF1F1A18))
+                                    Icon(Icons.Default.Menu, contentDescription = null, tint = MaterialTheme.colorScheme.onBackground)
                                 }
                             },
                             colors = TopAppBarDefaults.largeTopAppBarColors(
-                                containerColor = Color(0xFFFDF8F6),
-                                titleContentColor = Color(0xFF1F1A18)
+                                containerColor = MaterialTheme.colorScheme.background,
+                                titleContentColor = MaterialTheme.colorScheme.onBackground
                             )
                         )
                     }
@@ -1015,7 +1008,7 @@ fun MainAppShell(
                     if (activeTaskIdForDetails == null) {
                         Surface(
                             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                            color = Color(0xFFF5DED8),
+                            color = MaterialTheme.colorScheme.surfaceVariant,
                             tonalElevation = 0.dp,
                             shadowElevation = 0.dp
                         ) {
@@ -1032,11 +1025,11 @@ fun MainAppShell(
                                     NavigationBarItem(
                                         selected = currentBottomTab == tabKey,
                                         onClick = { currentBottomTab = tabKey },
-                                        label = { Text(label, color = Color(0xFF1F1A18), fontSize = 11.sp, fontWeight = if (currentBottomTab == tabKey) FontWeight.Bold else FontWeight.Medium) },
-                                        icon = { Icon(icon, contentDescription = null, tint = if (currentBottomTab == tabKey) Color(0xFF8F4C38) else Color(0xFF514441)) },
+                                        label = { Text(label, color = MaterialTheme.colorScheme.onSurface, fontSize = 11.sp, fontWeight = if (currentBottomTab == tabKey) FontWeight.Bold else FontWeight.Medium) },
+                                        icon = { Icon(icon, contentDescription = null, tint = if (currentBottomTab == tabKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant) },
                                         colors = NavigationBarItemDefaults.colors(
-                                            selectedIconColor = Color(0xFF8F4C38),
-                                            indicatorColor = Color(0xFFFFDBD1) // active tab background pill
+                                            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            indicatorColor = MaterialTheme.colorScheme.primaryContainer // active tab background pill
                                         )
                                     )
                                 }
@@ -1049,8 +1042,8 @@ fun MainAppShell(
                         if (currentBottomTab == "Calendar") {
                             FloatingActionButton(
                                 onClick = { showScheduleWorkflow = true },
-                                containerColor = Color(0xFF8F4C38),
-                                contentColor = Color.White,
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
                                 shape = RoundedCornerShape(16.dp),
                                 modifier = Modifier.testTag("fab_schedule_task")
                             ) {
@@ -1059,8 +1052,8 @@ fun MainAppShell(
                         } else {
                             FloatingActionButton(
                                 onClick = { showQuickAddDialog = true },
-                                containerColor = Color(0xFFFFDBCC),
-                                contentColor = Color(0xFF8F4C38),
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 shape = RoundedCornerShape(16.dp),
                                 modifier = Modifier.testTag("fab_add_task")
                             ) {
@@ -1069,7 +1062,7 @@ fun MainAppShell(
                         }
                     }
                 },
-                containerColor = Color(0xFFFDF8F6)
+                containerColor = MaterialTheme.colorScheme.background
             ) { innerPadding ->
                 Box(
                     modifier = Modifier
@@ -1143,21 +1136,21 @@ fun MainAppShell(
 
             Dialog(onDismissRequest = { showAddProjectDialog = false }) {
                 Surface(
-                    color = Color(0xFF1E1D2D),
+                    color = MaterialTheme.colorScheme.outline,
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
-                        Text("New Project", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("New Project", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                         Spacer(modifier = Modifier.height(16.dp))
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            label = { Text("Project Name", color = Color.White.copy(alpha = 0.5f)) },
-                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                            label = { Text("Project Name", color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)) },
+                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = MaterialTheme.colorScheme.onBackground, unfocusedTextColor = MaterialTheme.colorScheme.onBackground)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text("Color Label", fontSize = 12.sp, color = Color.White.copy(alpha = 0.5f))
+                        Text("Color Label", fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             colors.forEach { c ->
@@ -1165,7 +1158,7 @@ fun MainAppShell(
                                     modifier = Modifier
                                         .size(24.dp)
                                         .background(Color(c), shape = CircleShape)
-                                        .border(if (selectedColor == c) 2.dp else 0.dp, Color.White, CircleShape)
+                                        .border(if (selectedColor == c) 2.dp else 0.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
                                         .clickable { selectedColor = c }
                                 )
                             }
@@ -1191,21 +1184,21 @@ fun MainAppShell(
 
             Dialog(onDismissRequest = { showAddTagDialog = false }) {
                 Surface(
-                    color = Color(0xFF1E1D2D),
+                    color = MaterialTheme.colorScheme.outline,
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
-                        Text("New Tab Label", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("New Tab Label", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                         Spacer(modifier = Modifier.height(16.dp))
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            label = { Text("Label Title", color = Color.White.copy(alpha = 0.5f)) },
-                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                            label = { Text("Label Title", color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)) },
+                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = MaterialTheme.colorScheme.onBackground, unfocusedTextColor = MaterialTheme.colorScheme.onBackground)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text("Tag Tint", fontSize = 12.sp, color = Color.White.copy(alpha = 0.5f))
+                        Text("Tag Tint", fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             colors.forEach { c ->
@@ -1213,7 +1206,7 @@ fun MainAppShell(
                                     modifier = Modifier
                                         .size(24.dp)
                                         .background(Color(c), shape = CircleShape)
-                                        .border(if (selectedColor == c) 2.dp else 0.dp, Color.White, CircleShape)
+                                        .border(if (selectedColor == c) 2.dp else 0.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
                                         .clickable { selectedColor = c }
                                 )
                             }
@@ -1261,15 +1254,15 @@ fun TasksTabScreen(
         ) {
             Text(
                 text = "${tasks.size} Available Tasks",
-                color = Color(0xFF514441),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 13.sp
             )
 
             Box {
                 Button(
                     onClick = { showSortMenu = true },
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1F1A18)),
-                    border = BorderStroke(1.dp, Color(0xFFF5DED8)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant),
                     shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                 ) {
@@ -1281,11 +1274,11 @@ fun TasksTabScreen(
                 DropdownMenu(
                     expanded = showSortMenu,
                     onDismissRequest = { showSortMenu = false },
-                    modifier = Modifier.background(Color.White)
+                    modifier = Modifier.background(MaterialTheme.colorScheme.surface)
                 ) {
                     listOf("Date", "Priority", "Alpha", "Custom").forEach { opt ->
                         DropdownMenuItem(
-                            text = { Text(opt, color = Color(0xFF1F1A18)) },
+                            text = { Text(opt, color = MaterialTheme.colorScheme.onSurface) },
                             onClick = {
                                 viewModel.setSortOrder(opt)
                                 showSortMenu = false
@@ -1309,18 +1302,18 @@ fun TasksTabScreen(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.PlaylistAddCheck,
                         contentDescription = "Inbox empty",
-                        tint = Color(0xFF85736E).copy(alpha = 0.3f),
+                        tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
                         modifier = Modifier.size(112.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "Everything matches! All tasks checked.",
-                        color = Color(0xFF514441),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
                         text = "Use '+' to add something fresh.",
-                        color = Color(0xFF85736E),
+                        color = MaterialTheme.colorScheme.outline,
                         fontSize = 12.sp,
                         modifier = Modifier.padding(top = 4.dp)
                     )
@@ -1353,24 +1346,25 @@ fun TaskListItemCard(
     onClick: () -> Unit
 ) {
     val borderTint = when (task.priority) {
-        1 -> Color(0xFFD9411E)
-        else -> Color(0xFF85736E)
+        1 -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.outline
     }
 
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .testTag("task_item_card_${task.id}")
-            .alpha(if (task.isCompleted) 0.5f else 1.0f)
             .clickable(onClick = onClick),
-        color = Color.White,
+        color = if (task.isCompleted) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
+        shadowElevation = if (task.isCompleted) 0.dp else 2.dp,
         shape = RoundedCornerShape(24.dp), // rounded-3xl
-        border = BorderStroke(1.dp, Color(0xFFF5DED8))
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .alpha(if (task.isCompleted) 0.7f else 1.0f),
             verticalAlignment = Alignment.Top
         ) {
             IconButton(
@@ -1393,7 +1387,7 @@ fun TaskListItemCard(
                         text = task.title,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF1F1A18),
+                        color = MaterialTheme.colorScheme.onSurface,
                         textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                         modifier = Modifier.weight(1f, fill = false)
                     )
@@ -1403,8 +1397,8 @@ fun TaskListItemCard(
                              text = "P1",
                              fontSize = 10.sp,
                              fontWeight = FontWeight.Bold,
-                             color = Color(0xFFD9411E),
-                             modifier = Modifier.background(Color(0xFFFFDAD4), RoundedCornerShape(4.dp)).padding(horizontal = 6.dp, vertical = 2.dp)
+                             color = MaterialTheme.colorScheme.error,
+                             modifier = Modifier.background(MaterialTheme.colorScheme.outline, RoundedCornerShape(4.dp)).padding(horizontal = 6.dp, vertical = 2.dp)
                          )
                     }
                 }
@@ -1414,7 +1408,7 @@ fun TaskListItemCard(
                     Text(
                         text = task.description,
                         fontSize = 13.sp,
-                        color = Color(0xFF514441),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2
                     )
                 }
@@ -1428,22 +1422,22 @@ fun TaskListItemCard(
                     ) {
                         task.dueDate?.let { due ->
                             val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.US)
-                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color(0xFFF5DED8), RoundedCornerShape(12.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) {
-                                Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color(0xFF514441), modifier = Modifier.size(12.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) {
+                                Icon(Icons.Default.CalendarToday, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(12.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
                                     text = formatter.format(Date(due)) + (task.dueTime?.let { " at $it" } ?: ""),
                                     fontSize = 11.sp,
-                                    color = Color(0xFF514441)
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
 
                         if (task.recurrence != "NONE") {
-                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color(0xFFF5DED8), RoundedCornerShape(12.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) {
-                                Icon(Icons.Default.Sync, contentDescription = null, tint = Color(0xFF8F4C38), modifier = Modifier.size(12.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)).padding(horizontal = 6.dp, vertical = 2.dp)) {
+                                Icon(Icons.Default.Sync, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(12.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text(task.recurrence, fontSize = 11.sp, color = Color(0xFF8F4C38))
+                                Text(task.recurrence, fontSize = 11.sp, color = MaterialTheme.colorScheme.primary)
                             }
                         }
                     }
@@ -1451,7 +1445,7 @@ fun TaskListItemCard(
             }
 
             // Arrow Indicator
-            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Color(0xFF85736E).copy(alpha = 0.5f))
+            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
         }
     }
 }
@@ -1506,12 +1500,12 @@ fun CalendarTabScreen(
                 text = monthLabel,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1F1A18)
+                color = MaterialTheme.colorScheme.onBackground
             )
             Icon(
                 imageVector = Icons.Default.CalendarToday,
                 contentDescription = null,
-                tint = Color(0xFF8F4C38),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -1530,8 +1524,8 @@ fun CalendarTabScreen(
 
                 Surface(
                     shape = RoundedCornerShape(16.dp),
-                    color = if (isSelected) Color(0xFF8F4C38) else Color(0xFFFFF9F8),
-                    border = BorderStroke(1.dp, if (isSelected) Color(0xFF8F4C38) else Color(0xFFF5DED8)),
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                    border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant),
                     modifier = Modifier
                         .width(60.dp)
                         .clickable { onDateSelected(dateMs) }
@@ -1545,14 +1539,14 @@ fun CalendarTabScreen(
                             text = dayStr.uppercase(Locale.getDefault()),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (isSelected) Color.White else Color(0xFF85736E)
+                            color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = dateStr,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = if (isSelected) Color.White else Color(0xFF1F1A18)
+                            color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
@@ -1566,7 +1560,7 @@ fun CalendarTabScreen(
             text = "Scheduled Tasks",
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF514441)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -1582,20 +1576,20 @@ fun CalendarTabScreen(
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
                         contentDescription = null,
-                        tint = Color(0xFF8F4C38).copy(alpha = 0.15f),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                         modifier = Modifier.size(96.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "All clear for today!",
-                        color = Color(0xFF1F1A18),
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "No schedules or events planned.",
-                        color = Color(0xFF85736E),
+                        color = MaterialTheme.colorScheme.outline,
                         fontSize = 12.sp
                     )
                 }
@@ -1663,7 +1657,7 @@ fun ScheduleTaskDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             tonalElevation = 6.dp
@@ -1682,7 +1676,7 @@ fun ScheduleTaskDialog(
                         text = "Schedule Task", 
                         fontSize = 20.sp, 
                         fontWeight = FontWeight.Bold, 
-                        color = Color(0xFF1F1A18)
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     IconButton(onClick = onDismiss) {
                         Icon(Icons.Default.Close, contentDescription = "Close")
@@ -1691,25 +1685,25 @@ fun ScheduleTaskDialog(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Text("Task Title", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF514441))
+                Text("Task Title", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    placeholder = { Text("What are you planning?", color = Color(0xFF85736E)) },
+                    placeholder = { Text("What are you planning?", color = MaterialTheme.colorScheme.outline) },
                     modifier = Modifier.fillMaxWidth().testTag("schedule_title_input"),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color(0xFF1F1A18), 
-                        unfocusedTextColor = Color(0xFF1F1A18),
-                        focusedBorderColor = Color(0xFF8F4C38),
-                        unfocusedBorderColor = Color(0xFFF5DED8)
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground, 
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
                     )
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text("Date & Time Schedule", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF514441))
+                Text("Date & Time Schedule", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -1718,7 +1712,7 @@ fun ScheduleTaskDialog(
                     // Date selector custom card
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFFFFDBCC),
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier
                             .weight(1f)
                             .clickable { datePickerDialog.show() }
@@ -1728,16 +1722,16 @@ fun ScheduleTaskDialog(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.CalendarToday, contentDescription = null, tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.CalendarToday, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text(dateFormated, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF8F4C38))
+                            Text(dateFormated, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                         }
                     }
 
                     // Time selector custom card
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFFFFDBCC),
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier
                             .weight(1f)
                             .clickable { timePickerDialog.show() }
@@ -1747,28 +1741,28 @@ fun ScheduleTaskDialog(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.AccessTime, contentDescription = null, tint = Color(0xFF8F4C38), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.AccessTime, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text(selectedTime, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF8F4C38))
+                            Text(selectedTime, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                         }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text("Notes", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF514441))
+                Text("Notes", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    placeholder = { Text("Add scheduling notes...", color = Color(0xFF85736E)) },
+                    placeholder = { Text("Add scheduling notes...", color = MaterialTheme.colorScheme.outline) },
                     modifier = Modifier.fillMaxWidth().testTag("schedule_notes_input"),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color(0xFF1F1A18), 
-                        unfocusedTextColor = Color(0xFF1F1A18),
-                        focusedBorderColor = Color(0xFF8F4C38),
-                        unfocusedBorderColor = Color(0xFFF5DED8)
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground, 
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
                     maxLines = 3
                 )
@@ -1795,10 +1789,10 @@ fun ScheduleTaskDialog(
                         .height(54.dp)
                         .testTag("schedule_submit_btn"),
                     shape = RoundedCornerShape(27.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8F4C38)),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     enabled = title.isNotBlank()
                 ) {
-                    Text("Create & Focus Schedule", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Text("Create & Focus Schedule", color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 }
             }
         }
@@ -1815,7 +1809,17 @@ fun SettingsTabScreen(
 ) {
     val settings by todoViewModel.appSettings.collectAsStateWithLifecycle()
     val userEmail by authViewModel.userEmail.collectAsStateWithLifecycle()
+    val userDisplayName by authViewModel.userDisplayName.collectAsStateWithLifecycle()
     val isGuestMode by authViewModel.isGuestMode.collectAsStateWithLifecycle()
+    val tasks by todoViewModel.tasks.collectAsStateWithLifecycle()
+
+    val completedTasks = tasks.count { it.isCompleted }
+    val todayMs = System.currentTimeMillis()
+    val sdf = java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
+    val todayYmd = sdf.format(java.util.Date(todayMs))
+    val remainingToday = tasks.count {
+        it.dueDate != null && !it.isCompleted && sdf.format(java.util.Date(it.dueDate)) == todayYmd
+    }
 
     val context = LocalContext.current
 
@@ -1841,47 +1845,97 @@ fun SettingsTabScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        Text("Account Section", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
+        Text("Account Section", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(12.dp))
 
-        Surface(color = Color.White, border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = MaterialTheme.colorScheme.surface, border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = if (isGuestMode) "Logged in as Guest" else "Logged in as: $userEmail",
-                    color = Color(0xFF1F1A18),
+                    text = if (isGuestMode) "Logged in as Guest" else "Logged in as: ${userDisplayName ?: "User"}",
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                if (!isGuestMode) {
+                    Text(
+                        text = userEmail ?: "",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 14.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = { authViewModel.logout() },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9411E))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Logout and Clear Profile", color = Color.White)
+                    Text("Logout and Clear Profile", color = MaterialTheme.colorScheme.onError)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Appearance Options", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
+        Text("Task Statistics", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(12.dp))
 
-        Surface(color = Color.White, border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = MaterialTheme.colorScheme.surface, border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp).fillMaxWidth()
+            ) {
+                TaskStatisticsGraph(completed = completedTasks, remaining = remainingToday)
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Completed",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 12.sp
+                        )
+                        Text(
+                            text = "$completedTasks",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Remaining",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 12.sp
+                        )
+                        Text(
+                            text = "$remainingToday",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text("Appearance Options", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Surface(color = MaterialTheme.colorScheme.surface, border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Dark Theme Default", color = Color(0xFF1F1A18))
+                    Text("Dark Mode", color = MaterialTheme.colorScheme.onSurface)
                     Switch(
-                        checked = settings.isDarkMode ?: true,
+                        checked = settings.isDarkMode ?: isSystemInDarkTheme(),
                         onCheckedChange = { todoViewModel.updateThemeMode(it) }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Custom Accent Style", fontSize = 14.sp, color = Color(0xFF514441))
+                Text("Custom Accent Style", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     val colors = listOf("#6750A4", "#FF5722", "#4CAF50", "#2196F3", "#E91E63")
@@ -1890,7 +1944,7 @@ fun SettingsTabScreen(
                             modifier = Modifier
                                 .size(28.dp)
                                 .background(Color(android.graphics.Color.parseColor(hex)), shape = CircleShape)
-                                .border(if (settings.primaryColorHex == hex) 2.dp else 0.dp, Color(0xFF1F1A18), CircleShape)
+                                .border(if (settings.primaryColorHex == hex) 2.dp else 0.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
                                 .clickable { todoViewModel.updateAccentColor(hex) }
                         )
                     }
@@ -1900,25 +1954,69 @@ fun SettingsTabScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Backup & Database Sync", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
+        Text("Backup & Database Sync (Cloud Backup via Remote DB API)", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(12.dp))
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(
+                onClick = {
+                    if (userEmail == null) {
+                        Toast.makeText(context, "Log in first!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Pushing data...", Toast.LENGTH_SHORT).show()
+                        todoViewModel.syncDataToCloud(userEmail!!) { success, msg ->
+                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                contentPadding = PaddingValues(horizontal = 8.dp)
+            ) {
+                Icon(Icons.Default.CloudUpload, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Cloud Backup", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
+            }
+
+            Button(
+                onClick = {
+                    if (userEmail == null) {
+                        Toast.makeText(context, "Log in first!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Pulling data...", Toast.LENGTH_SHORT).show()
+                        todoViewModel.syncDataFromCloud(userEmail!!) { success, msg ->
+                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                contentPadding = PaddingValues(horizontal = 8.dp)
+            ) {
+                Icon(Icons.Default.CloudDownload, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Cloud Restore", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
             onClick = {
                 exportLauncher.launch("backup.json")
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00B0FF))
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
-            Icon(Icons.Default.CloudDownload, contentDescription = null)
+            Icon(Icons.Default.Save, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Export Data Backup as JSON")
+            Text("Export Data Local File")
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        Text("About & Support", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF514441))
+        Text("About & Support", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Version 1.0.0 (May 2026)\nBuilt on Android Kotlin Compose Core.\nOffline & Online Intelligent NLP Systems.", fontSize = 12.sp, color = Color(0xFF85736E))
+        Text("Version 1.0.0 (May 2026)\nBuilt on Android Kotlin Compose Core.\nOffline & Online Intelligent NLP Systems.", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
     }
 }
 
@@ -1940,7 +2038,7 @@ fun QuickAddTaskDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             tonalElevation = 6.dp
@@ -1959,10 +2057,10 @@ fun QuickAddTaskDialog(
                         text = "Quick Task Record",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1F1A18)
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Close Dialog", tint = Color(0xFF85736E))
+                        Icon(Icons.Default.Close, contentDescription = "Close Dialog", tint = MaterialTheme.colorScheme.outline)
                     }
                 }
                 
@@ -1972,16 +2070,16 @@ fun QuickAddTaskDialog(
                 OutlinedTextField(
                     value = taskText,
                     onValueChange = { taskText = it },
-                    placeholder = { Text("E.g., Buy bread tomorrow at 6 PM P1", color = Color(0xFF85736E), fontSize = 14.sp) },
+                    placeholder = { Text("E.g., Buy bread tomorrow at 6 PM P1", color = MaterialTheme.colorScheme.outline, fontSize = 14.sp) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("quick_add_text_input"),
                     shape = RoundedCornerShape(28.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color(0xFF1F1A18),
-                        unfocusedTextColor = Color(0xFF1F1A18),
-                        focusedContainerColor = Color(0xFFF5EFEF),
-                        unfocusedContainerColor = Color(0xFFF5EFEF),
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        focusedContainerColor = MaterialTheme.colorScheme.outline,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.outline,
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
                     ),
@@ -1995,21 +2093,21 @@ fun QuickAddTaskDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFFFF1EE), RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(12.dp))
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("Auto Date NLP Parser", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1F1A18))
-                        Text("Extract date, time and flags automatically", fontSize = 11.sp, color = Color(0xFF85736E))
+                        Text("Auto Date NLP Parser", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                        Text("Extract date, time and flags automatically", fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
                     }
                     Switch(
                         checked = nlpEnabled, 
                         onCheckedChange = { nlpEnabled = it },
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = Color.White,
-                            checkedTrackColor = Color(0xFF8F4C38)
+                            checkedThumbColor = MaterialTheme.colorScheme.onBackground,
+                            checkedTrackColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
@@ -2035,7 +2133,7 @@ fun QuickAddTaskDialog(
                             modifier = Modifier
                                 .size(72.dp)
                                 .background(
-                                    if (isSimulatingVoice) Color(0xFFD32F2F) else Color(0xFFFFDBCC),
+                                    if (isSimulatingVoice) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer,
                                     shape = CircleShape
                                 )
                                 .testTag("voice_dictation_btn")
@@ -2043,7 +2141,7 @@ fun QuickAddTaskDialog(
                             Icon(
                                 imageVector = if (isSimulatingVoice) Icons.AutoMirrored.Filled.VolumeUp else Icons.Default.Mic,
                                 contentDescription = "Voice dictation recording",
-                                tint = if (isSimulatingVoice) Color.White else Color(0xFF8F4C38),
+                                tint = if (isSimulatingVoice) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(32.dp)
                             )
                         }
@@ -2052,7 +2150,7 @@ fun QuickAddTaskDialog(
                             text = if (isSimulatingVoice) "Recording voice..." else "Tap to Dictate (Voice)",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (isSimulatingVoice) Color(0xFFD32F2F) else Color(0xFF514441)
+                            color = if (isSimulatingVoice) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -2079,14 +2177,14 @@ fun QuickAddTaskDialog(
                         .testTag("quick_add_submit_btn"),
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF8F4C38),
-                        disabledContainerColor = Color(0xFFE5D5D1)
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.outline
                     ),
                     enabled = taskText.isNotBlank()
                 ) {
                     Text(
                         text = "Add Task",
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 16.sp,
                         letterSpacing = 0.5.sp
@@ -2131,7 +2229,7 @@ fun TaskDetailPage(
 
     if (task == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = Color(0xFF8F4C38))
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
         return
     }
@@ -2151,14 +2249,14 @@ fun TaskDetailPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color(0xFF1F1A18))
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
             }
-            Text("Details Editor", fontWeight = FontWeight.Bold, color = Color(0xFF1F1A18), fontSize = 18.sp)
+            Text("Details Editor", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp)
             IconButton(onClick = {
                 todoViewModel.deleteTask(currentTask)
                 onBack()
             }) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete Task", tint = Color(0xFFD32F2F))
+                Icon(Icons.Default.Delete, contentDescription = "Delete Task", tint = MaterialTheme.colorScheme.error)
             }
         }
 
@@ -2175,14 +2273,14 @@ fun TaskDetailPage(
             label = { Text("Task Summary Title") },
             modifier = Modifier.fillMaxWidth().testTag("edit_task_title"),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color(0xFF1F1A18),
-                unfocusedTextColor = Color(0xFF1F1A18),
-                focusedBorderColor = Color(0xFF8F4C38),
-                unfocusedBorderColor = Color(0xFFD5C2BE),
-                focusedLabelColor = Color(0xFF8F4C38),
-                unfocusedLabelColor = Color(0xFF85736E),
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.outline,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface
             ),
             shape = RoundedCornerShape(12.dp)
         )
@@ -2199,14 +2297,14 @@ fun TaskDetailPage(
             label = { Text("Rich Formatting Notes") },
             modifier = Modifier.fillMaxWidth().height(120.dp).testTag("edit_task_notes"),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color(0xFF1F1A18),
-                unfocusedTextColor = Color(0xFF1F1A18),
-                focusedBorderColor = Color(0xFF8F4C38),
-                unfocusedBorderColor = Color(0xFFD5C2BE),
-                focusedLabelColor = Color(0xFF8F4C38),
-                unfocusedLabelColor = Color(0xFF85736E),
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.outline,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface
             ),
             shape = RoundedCornerShape(12.dp)
         )
@@ -2214,7 +2312,7 @@ fun TaskDetailPage(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Priorities selectors
-        Text("Priority Flag", fontSize = 13.sp, color = Color(0xFF514441), fontWeight = FontWeight.SemiBold)
+        Text("Priority Flag", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -2229,22 +2327,22 @@ fun TaskDetailPage(
             priorities.forEach { (p, label) ->
                 val active = currentTask.priority == p
                 val bg = when (p) {
-                    1 -> if (active) Color(0xFFD32F2F) else Color(0xFFFFDAD4)
-                    2 -> if (active) Color(0xFFF57C00) else Color(0xFFFFDCC0)
-                    3 -> if (active) Color(0xFFFBC02D) else Color(0xFFFFF9C4)
-                    else -> if (active) Color(0xFF85736E) else Color(0xFFF5EBE8)
+                    1 -> if (active) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                    2 -> if (active) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline
+                    3 -> if (active) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline
+                    else -> if (active) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline
                 }
                 val textColor = when (p) {
-                    1 -> if (active) Color.White else Color(0xFF410002)
-                    2 -> if (active) Color.White else Color(0xFF301400)
-                    3 -> if (active) Color.Black else Color(0xFF423A00)
-                    else -> if (active) Color.White else Color(0xFF514441)
+                    1 -> if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline
+                    2 -> if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline
+                    3 -> if (active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline
+                    else -> if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurfaceVariant
                 }
                 val borderCol = when (p) {
-                    1 -> Color(0xFFD32F2F)
-                    2 -> Color(0xFFF57C00)
-                    3 -> Color(0xFFFBC02D)
-                    else -> Color(0xFFD5C2BE)
+                    1 -> MaterialTheme.colorScheme.error
+                    2 -> MaterialTheme.colorScheme.outline
+                    3 -> MaterialTheme.colorScheme.outline
+                    else -> MaterialTheme.colorScheme.outline
                 }
                 Box(
                     modifier = Modifier
@@ -2267,7 +2365,7 @@ fun TaskDetailPage(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Recurrence repeats selectors
-        Text("Recurrence Repeat Schedule", fontSize = 13.sp, color = Color(0xFF514441), fontWeight = FontWeight.SemiBold)
+        Text("Recurrence Repeat Schedule", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.horizontalScroll(rememberScrollState()).fillMaxWidth(),
@@ -2286,8 +2384,8 @@ fun TaskDetailPage(
                 }
                 Box(
                     modifier = Modifier
-                        .background(if (active) Color(0xFF8F4C38) else Color(0xFFF5EBE8), RoundedCornerShape(8.dp))
-                        .border(1.dp, if (active) Color(0xFF8F4C38) else Color(0xFFD5C2BE), RoundedCornerShape(8.dp))
+                        .background(if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                        .border(1.dp, if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .clickable {
                             val updated = currentTask.copy(recurrence = item)
                             task = updated
@@ -2295,7 +2393,7 @@ fun TaskDetailPage(
                         }
                         .padding(horizontal = 14.dp, vertical = 8.dp)
                 ) {
-                    Text(label, color = if (active) Color.White else Color(0xFF514441), fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                    Text(label, color = if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp, fontWeight = FontWeight.Medium)
                 }
             }
         }
@@ -2311,15 +2409,15 @@ fun TaskDetailPage(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Subtasks Tracker", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
-            Text("${completedCount}/${subtasks.size} Items Completed", fontSize = 12.sp, color = Color(0xFF514441))
+            Text("Subtasks Tracker", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+            Text("${completedCount}/${subtasks.size} Items Completed", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Spacer(modifier = Modifier.height(8.dp))
         LinearProgressIndicator(
             progress = { progressPercent },
             modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
-            color = Color(0xFF00E676),
-            trackColor = Color(0xFFF5DED8)
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant
         )
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -2334,12 +2432,12 @@ fun TaskDetailPage(
                 )
                 Text(
                     text = item.title,
-                    color = if (item.isCompleted) Color(0xFF1F1A18).copy(alpha = 0.5f) else Color(0xFF1F1A18),
+                    color = if (item.isCompleted) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
                     textDecoration = if (item.isCompleted) TextDecoration.LineThrough else null,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(onClick = { todoViewModel.deleteSubtask(item) }, modifier = Modifier.size(24.dp)) {
-                    Icon(Icons.Default.Delete, contentDescription = null, tint = Color(0xFFD32F2F).copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
+                    Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
                 }
             }
         }
@@ -2348,15 +2446,15 @@ fun TaskDetailPage(
             OutlinedTextField(
                 value = subtaskText,
                 onValueChange = { subtaskText = it },
-                placeholder = { Text("Add nested subtask info...", color = Color(0xFF85736E)) },
+                placeholder = { Text("Add nested subtask info...", color = MaterialTheme.colorScheme.outline) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = Color(0xFF1F1A18),
-                    unfocusedTextColor = Color(0xFF1F1A18),
-                    focusedBorderColor = Color(0xFF8F4C38),
-                    unfocusedBorderColor = Color(0xFFD5C2BE),
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(12.dp)
             )
@@ -2368,25 +2466,25 @@ fun TaskDetailPage(
                         subtaskText = ""
                     }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8F4C38))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text("Add", color = Color.White)
+                Text("Add", color = MaterialTheme.colorScheme.onBackground)
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Geofencing GPS Triggers section
-        Text("Geofencing Location Alerts", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
+        Text("Geofencing Location Alerts", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
         Spacer(modifier = Modifier.height(10.dp))
-        Surface(color = Color(0xFFFFF1EE), border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = MaterialTheme.colorScheme.primaryContainer, border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(14.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Trigger on coordinates arrival", color = Color(0xFF1F1A18), fontWeight = FontWeight.Medium)
+                    Text("Trigger on coordinates arrival", color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium)
                     Switch(checked = geofencingEnabled, onCheckedChange = { geofencingEnabled = it })
                 }
                 if (geofencingEnabled) {
@@ -2397,12 +2495,12 @@ fun TaskDetailPage(
                         label = { Text("Alert Name") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color(0xFF1F1A18),
-                            unfocusedTextColor = Color(0xFF1F1A18),
-                            focusedBorderColor = Color(0xFF8F4C38),
-                            unfocusedBorderColor = Color(0xFFD5C2BE),
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White
+                            focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface
                         )
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -2413,12 +2511,12 @@ fun TaskDetailPage(
                             label = { Text("Latitude") },
                             modifier = Modifier.weight(1f),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedTextColor = Color(0xFF1F1A18),
-                                unfocusedTextColor = Color(0xFF1F1A18),
-                                focusedBorderColor = Color(0xFF8F4C38),
-                                unfocusedBorderColor = Color(0xFFD5C2BE),
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White
+                                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface
                             )
                         )
                         OutlinedTextField(
@@ -2427,12 +2525,12 @@ fun TaskDetailPage(
                             label = { Text("Longitude") },
                             modifier = Modifier.weight(1f),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedTextColor = Color(0xFF1F1A18),
-                                unfocusedTextColor = Color(0xFF1F1A18),
-                                focusedBorderColor = Color(0xFF8F4C38),
-                                unfocusedBorderColor = Color(0xFFD5C2BE),
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White
+                                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface
                             )
                         )
                     }
@@ -2443,56 +2541,56 @@ fun TaskDetailPage(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Attachments Area (PDF/JPG Upload)
-        Text("Photos & Documents Attachments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
+        Text("Photos & Documents Attachments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
         Spacer(modifier = Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
             attachmentsList.forEach { file ->
                 Box(
                     modifier = Modifier
-                        .background(Color(0xFFF5EBE8), RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .clickable { Toast.makeText(context, "Opening $file...", Toast.LENGTH_SHORT).show() }
                         .padding(horizontal = 12.dp, vertical = 8.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.AttachFile, contentDescription = null, tint = Color(0xFF514441), modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.AttachFile, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(14.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(file, color = Color(0xFF1F1A18), fontSize = 13.sp)
+                        Text(file, color = MaterialTheme.colorScheme.onBackground, fontSize = 13.sp)
                     }
                 }
             }
             Box(
                 modifier = Modifier
-                    .background(Color(0xFF8F4C38).copy(alpha = 0.15f), RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f), RoundedCornerShape(8.dp))
                     .clickable {
                         attachmentsList = attachmentsList + "attachment_${System.currentTimeMillis() % 1000}.png"
                         Toast.makeText(context, "Uploaded attachment!", Toast.LENGTH_SHORT).show()
                     }
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
-                Text("+ Upload", color = Color(0xFF8F4C38), fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                Text("+ Upload", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Localized Collaborative task chat discussion
-        Text("Task Internal Team Comments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1F1A18))
+        Text("Task Internal Team Comments", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
         Spacer(modifier = Modifier.height(10.dp))
 
-        Surface(color = Color(0xFFFFF1EE), border = BorderStroke(1.dp, Color(0xFFF5DED8)), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = MaterialTheme.colorScheme.primaryContainer, border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(14.dp)) {
                 if (comments.isEmpty()) {
-                    Text("No coordination remarks posted yet.", color = Color(0xFF85736E), fontSize = 13.sp)
+                    Text("No coordination remarks posted yet.", color = MaterialTheme.colorScheme.outline, fontSize = 13.sp)
                 } else {
                     comments.forEach { c ->
                         Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                                Text(c.userName, fontWeight = FontWeight.Bold, color = Color(0xFF8F4C38), fontSize = 12.sp)
+                                Text(c.userName, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
                                 val sdf = java.text.SimpleDateFormat("HH:mm", java.util.Locale.US)
-                                Text(sdf.format(java.util.Date(c.timestamp)), color = Color(0xFF85736E), fontSize = 10.sp)
+                                Text(sdf.format(java.util.Date(c.timestamp)), color = MaterialTheme.colorScheme.outline, fontSize = 10.sp)
                             }
-                            Text(c.content, color = Color(0xFF1F1A18), fontSize = 13.sp)
-                            HorizontalDivider(color = Color(0xFFF5DED8), modifier = Modifier.padding(top = 4.dp))
+                            Text(c.content, color = MaterialTheme.colorScheme.onBackground, fontSize = 13.sp)
+                            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.padding(top = 4.dp))
                         }
                     }
                 }
@@ -2501,15 +2599,15 @@ fun TaskDetailPage(
                     OutlinedTextField(
                         value = commentText,
                         onValueChange = { commentText = it },
-                        placeholder = { Text("Leave team comment...", color = Color(0xFF85736E)) },
+                        placeholder = { Text("Leave team comment...", color = MaterialTheme.colorScheme.outline) },
                         modifier = Modifier.weight(1f),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color(0xFF1F1A18),
-                            unfocusedTextColor = Color(0xFF1F1A18),
-                            focusedBorderColor = Color(0xFF8F4C38),
-                            unfocusedBorderColor = Color(0xFFD5C2BE),
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White
+                            focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface
                         ),
                         shape = RoundedCornerShape(12.dp)
                     )
@@ -2522,10 +2620,71 @@ fun TaskDetailPage(
                             }
                         }
                     ) {
-                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send comments", tint = Color(0xFF8F4C38))
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send comments", tint = MaterialTheme.colorScheme.primary)
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun TaskStatisticsGraph(completed: Int, remaining: Int) {
+    val total = completed + remaining
+    val progress = if (total == 0) 0f else completed.toFloat() / total.toFloat()
+    
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val surfaceVariantColor = MaterialTheme.colorScheme.surfaceVariant
+
+    Box(
+        modifier = Modifier
+            .size(160.dp)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
+            val strokeWidth = 16.dp.toPx()
+            val arcSize = kotlin.math.max(0f, size.minDimension - strokeWidth)
+            if (arcSize <= 0f) return@Canvas
+            
+            val topLeft = androidx.compose.ui.geometry.Offset(strokeWidth / 2, strokeWidth / 2)
+            
+            // Draw background (remaining) ring
+            drawArc(
+                color = surfaceVariantColor,
+                startAngle = 0f,
+                sweepAngle = 360f,
+                useCenter = false,
+                topLeft = topLeft,
+                size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+            )
+            
+            // Draw progress (completed) ring
+            drawArc(
+                color = primaryColor,
+                startAngle = -90f,
+                sweepAngle = if (total == 0) 0f else progress * 360f,
+                useCenter = false,
+                topLeft = topLeft,
+                size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+            )
+        }
+        
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val percentage = if (total == 0) 0 else (progress * 100).toInt()
+            Text(
+                text = "$percentage%",
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
+            )
+            Text(
+                text = if (total == completed && total > 0) "Done!" else "Completed",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 12.sp
+            )
         }
     }
 }

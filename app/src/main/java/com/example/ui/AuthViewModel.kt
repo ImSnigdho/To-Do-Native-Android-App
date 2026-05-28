@@ -23,6 +23,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _userEmail = MutableStateFlow(prefs.getString("user_email", null))
     val userEmail: StateFlow<String?> = _userEmail.asStateFlow()
 
+    private val _userDisplayName = MutableStateFlow(prefs.getString("user_display_name", null))
+    val userDisplayName: StateFlow<String?> = _userDisplayName.asStateFlow()
+
     private val _isGuestMode = MutableStateFlow(prefs.getBoolean("is_guest_mode", false))
     val isGuestMode: StateFlow<Boolean> = _isGuestMode.asStateFlow()
 
@@ -65,15 +68,17 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         return loginWithEmail(email, password) // Simulation registers and logs in immediately
     }
 
-    fun loginWithGoogle(mockEmail: String = "google.user@gmail.com") {
+    fun loginWithGoogle(mockEmail: String = "google.user@gmail.com", displayName: String? = null) {
         _authError.value = null
         prefs.edit()
             .putBoolean("is_logged_in", true)
             .putString("user_email", mockEmail)
+            .putString("user_display_name", displayName)
             .putBoolean("is_guest_mode", false)
             .apply()
 
         _userEmail.value = mockEmail
+        _userDisplayName.value = displayName
         _isLoggedIn.value = true
         _isGuestMode.value = false
     }
@@ -109,10 +114,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit()
             .putBoolean("is_logged_in", false)
             .putString("user_email", null)
+            .putString("user_display_name", null)
             .putBoolean("is_guest_mode", false)
             .apply()
 
         _userEmail.value = null
+        _userDisplayName.value = null
         _isLoggedIn.value = false
         _isGuestMode.value = false
     }
