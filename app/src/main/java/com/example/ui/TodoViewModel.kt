@@ -451,32 +451,59 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     // Cloud Synchronization Methods via Firebase Realtime Database
     private val firebaseSyncManager = com.example.data.FirebaseSyncManager(repository)
 
-    fun syncDataToCloud(email: String, onComplete: (Boolean, String) -> Unit) {
+    private val _syncStatus = MutableStateFlow("Idle")
+    val syncStatus = _syncStatus.asStateFlow()
+
+    private var currentUserEmailForSync: String? = null
+
+    init {
+        // Observer for Auto-Push functionality
+        @OptIn(kotlinx.coroutines.FlowPreview::class, kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+        repository.allTasks
+            .drop(1) // Avoid auto-syncing the very first database emission on app startup
+            .debounce(2000L) // Wait 2 seconds after the last local update to avoid spamming
+            .onEach { tasks ->
+                currentUserEmailForSync?.let { email ->
+                    backupToCloud(email) // Automatically trigger push
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    // Call this upon Login Success to initialize auto-pull and register the email for auto-push
+    fun enableAutoSync(email: String) {
+        currentUserEmailForSync = email
+        restoreFromCloud(email)
+    }
+
+    fun backupToCloud(email: String) {
+        _syncStatus.value = "Syncing..."
         viewModelScope.launch {
             try {
                 val success = firebaseSyncManager.pushLocalTasksToCloud(email)
                 if (success) {
-                    onComplete(true, "Successfully pushed tasks to Firebase.")
+                    _syncStatus.value = "Success"
                 } else {
-                    onComplete(false, "Cloud sync failed. Check your network or Firebase rules.")
+                    _syncStatus.value = "Error"
                 }
             } catch (e: Exception) {
-                onComplete(false, "Sync failed: \${e.message}")
+                _syncStatus.value = "Error: ${e.message}"
             }
         }
     }
 
-    fun syncDataFromCloud(email: String, onComplete: (Boolean, String) -> Unit) {
+    fun restoreFromCloud(email: String) {
+        _syncStatus.value = "Syncing..."
         viewModelScope.launch {
             try {
                 val success = firebaseSyncManager.pullCloudTasksToLocal(email)
                 if (success) {
-                    onComplete(true, "Successfully restored tasks from Firebase.")
+                    _syncStatus.value = "Success"
                 } else {
-                    onComplete(false, "Restore failed. Check your network or Firebase rules.")
+                    _syncStatus.value = "Error"
                 }
             } catch (e: Exception) {
-                onComplete(false, "Restore failed: \${e.message}")
+                _syncStatus.value = "Error: ${e.message}"
             }
         }
     }

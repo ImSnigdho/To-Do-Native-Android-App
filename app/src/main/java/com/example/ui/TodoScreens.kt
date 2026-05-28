@@ -89,7 +89,13 @@ fun TodoAppShell(
             )
             "Auth" -> AuthScreen(
                 viewModel = authViewModel,
-                onSuccess = { currentScreen = "Main" }
+                onSuccess = { 
+                    val email = authViewModel.userEmail.value
+                    if (email != null && !authViewModel.isGuestMode.value) {
+                         todoViewModel.enableAutoSync(email)
+                    }
+                    currentScreen = "Main" 
+                }
             )
             "Main" -> MainAppShell(
                 todoViewModel = todoViewModel,
@@ -580,7 +586,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                         .fillMaxWidth()
                         .clickable(enabled = false) {}, // absorb touch events
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = Color.White,
                     tonalElevation = 8.dp
                 ) {
                     Column(
@@ -601,13 +607,13 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     "Signing in to To-Do App...", 
-                                    color = MaterialTheme.colorScheme.onBackground, 
+                                    color = Color.Black, 
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
                                 Text(
                                     selectedEmailForLoading!!, 
-                                    color = MaterialTheme.colorScheme.outline, 
+                                    color = Color.DarkGray, 
                                     fontSize = 14.sp,
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
@@ -622,14 +628,14 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                     text = "G",
                                     fontWeight = FontWeight.Black,
                                     fontSize = 24.sp,
-                                    color = MaterialTheme.colorScheme.outline
+                                    color = Color.DarkGray
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = "Choose an account",
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = Color.Black
                                 )
                             }
                             
@@ -637,7 +643,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                             Text(
                                 text = "to continue to To-Do App",
                                 fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = Color.DarkGray,
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
                             Spacer(modifier = Modifier.height(24.dp))
@@ -645,7 +651,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                             val accounts = listOf(
                                 Triple("Cubecraft Developer", "cubecraft627@gmail.com", MaterialTheme.colorScheme.primary),
                                 Triple("Cubecraft Secondary", "cubecraft.dev@gmail.com", MaterialTheme.colorScheme.secondary),
-                                Triple("Guest Account", "guest.user.todo@gmail.com", MaterialTheme.colorScheme.outline)
+                                Triple("Guest Account", "guest.user.todo@gmail.com", Color.Gray)
                             )
 
                             Column(
@@ -665,8 +671,8 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                         },
                                         modifier = Modifier.fillMaxWidth(),
                                         shape = RoundedCornerShape(12.dp),
-                                        color = MaterialTheme.colorScheme.primaryContainer,
-                                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant)
+                                        color = Color.White,
+                                        border = BorderStroke(1.dp, Color.LightGray)
                                     ) {
                                         Row(
                                             modifier = Modifier
@@ -682,7 +688,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                             ) {
                                                 Text(
                                                     text = name.first().toString(),
-                                                    color = MaterialTheme.colorScheme.onBackground,
+                                                    color = Color.White,
                                                     fontWeight = FontWeight.Bold,
                                                     fontSize = 18.sp
                                                 )
@@ -692,12 +698,12 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                                                 Text(
                                                     text = name,
                                                     fontWeight = FontWeight.SemiBold,
-                                                    color = MaterialTheme.colorScheme.onBackground,
+                                                    color = Color.Black,
                                                     fontSize = 14.sp
                                                 )
                                                 Text(
                                                     text = emailStr,
-                                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                    color = Color.DarkGray,
                                                     fontSize = 12.sp
                                                 )
                                             }
@@ -711,7 +717,7 @@ fun AuthScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
                             Text(
                                 text = "To continue, Google will share your name, email address, language preference and profile picture with To-Do App. Before using this app, you can review its privacy policy and terms of service.",
                                 fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.outline,
+                                color = Color.Gray,
                                 lineHeight = 16.sp
                             )
                         }
@@ -1657,8 +1663,8 @@ fun ScheduleTaskDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            color = MaterialTheme.colorScheme.onBackground,
-            shape = RoundedCornerShape(24.dp),
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             tonalElevation = 6.dp
         ) {
@@ -1676,7 +1682,7 @@ fun ScheduleTaskDialog(
                         text = "Schedule Task", 
                         fontSize = 20.sp, 
                         fontWeight = FontWeight.Bold, 
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     IconButton(onClick = onDismiss) {
                         Icon(Icons.Default.Close, contentDescription = "Close")
@@ -1694,8 +1700,8 @@ fun ScheduleTaskDialog(
                     modifier = Modifier.fillMaxWidth().testTag("schedule_title_input"),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.onBackground, 
-                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface, 
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
                     )
@@ -1812,6 +1818,7 @@ fun SettingsTabScreen(
     val userDisplayName by authViewModel.userDisplayName.collectAsStateWithLifecycle()
     val isGuestMode by authViewModel.isGuestMode.collectAsStateWithLifecycle()
     val tasks by todoViewModel.tasks.collectAsStateWithLifecycle()
+    val syncStatus by todoViewModel.syncStatus.collectAsStateWithLifecycle()
 
     val completedTasks = tasks.count { it.isCompleted }
     val todayMs = System.currentTimeMillis()
@@ -1954,7 +1961,7 @@ fun SettingsTabScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Backup & Database Sync (Cloud Backup via Remote DB API)", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text("Backup & Database Sync (Firebase Realtime DB)", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(12.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1963,10 +1970,7 @@ fun SettingsTabScreen(
                     if (userEmail == null) {
                         Toast.makeText(context, "Log in first!", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "Pushing data...", Toast.LENGTH_SHORT).show()
-                        todoViewModel.syncDataToCloud(userEmail!!) { success, msg ->
-                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-                        }
+                        todoViewModel.backupToCloud(userEmail!!)
                     }
                 },
                 modifier = Modifier.weight(1f),
@@ -1975,7 +1979,7 @@ fun SettingsTabScreen(
             ) {
                 Icon(Icons.Default.CloudUpload, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Cloud Backup", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
+                Text("Backup to Cloud", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
 
             Button(
@@ -1983,10 +1987,7 @@ fun SettingsTabScreen(
                     if (userEmail == null) {
                         Toast.makeText(context, "Log in first!", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "Pulling data...", Toast.LENGTH_SHORT).show()
-                        todoViewModel.syncDataFromCloud(userEmail!!) { success, msg ->
-                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-                        }
+                        todoViewModel.restoreFromCloud(userEmail!!)
                     }
                 },
                 modifier = Modifier.weight(1f),
@@ -1995,9 +1996,17 @@ fun SettingsTabScreen(
             ) {
                 Icon(Icons.Default.CloudDownload, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Cloud Restore", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
+                Text("Restore from Cloud", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
         }
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Status: $syncStatus", 
+            color = MaterialTheme.colorScheme.onSurfaceVariant, 
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Medium
+        )
         
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -2038,8 +2047,8 @@ fun QuickAddTaskDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            color = MaterialTheme.colorScheme.onBackground,
-            shape = RoundedCornerShape(24.dp),
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             tonalElevation = 6.dp
         ) {
@@ -2057,7 +2066,7 @@ fun QuickAddTaskDialog(
                         text = "Quick Task Record",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     IconButton(onClick = onDismiss) {
                         Icon(Icons.Default.Close, contentDescription = "Close Dialog", tint = MaterialTheme.colorScheme.outline)
@@ -2076,10 +2085,10 @@ fun QuickAddTaskDialog(
                         .testTag("quick_add_text_input"),
                     shape = RoundedCornerShape(28.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                        focusedContainerColor = MaterialTheme.colorScheme.outline,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.outline,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
                     ),
@@ -2205,8 +2214,11 @@ fun TaskDetailPage(
     onBack: () -> Unit
 ) {
     var task by remember { mutableStateOf<Task?>(null) }
-    val comments by todoViewModel.getComments(taskId).collectAsStateWithLifecycle(emptyList())
-    val subtasks by todoViewModel.getSubtasks(taskId).collectAsStateWithLifecycle(emptyList())
+    val commentsFlow = remember(taskId) { todoViewModel.getComments(taskId) }
+    val comments by commentsFlow.collectAsStateWithLifecycle(emptyList())
+
+    val subtasksFlow = remember(taskId) { todoViewModel.getSubtasks(taskId) }
+    val subtasks by subtasksFlow.collectAsStateWithLifecycle(emptyList())
 
     val coroutine = rememberCoroutineScope()
     val context = LocalContext.current
@@ -2319,45 +2331,35 @@ fun TaskDetailPage(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val priorities = listOf(
-                1 to "P1 (Red)",
-                2 to "P2 (Orange)",
-                3 to "P3 (Yellow)",
+                1 to "P1",
+                2 to "P2",
+                3 to "P3",
                 4 to "None"
             )
             priorities.forEach { (p, label) ->
                 val active = currentTask.priority == p
-                val bg = when (p) {
-                    1 -> if (active) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
-                    2 -> if (active) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline
-                    3 -> if (active) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline
-                    else -> if (active) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline
+                val semanticColor = when (p) {
+                    1 -> Color(0xFFE53935)
+                    2 -> Color(0xFFFF9800)
+                    3 -> Color(0xFF2196F3)
+                    else -> Color(0xFF9E9E9E)
                 }
-                val textColor = when (p) {
-                    1 -> if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline
-                    2 -> if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline
-                    3 -> if (active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline
-                    else -> if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurfaceVariant
-                }
-                val borderCol = when (p) {
-                    1 -> MaterialTheme.colorScheme.error
-                    2 -> MaterialTheme.colorScheme.outline
-                    3 -> MaterialTheme.colorScheme.outline
-                    else -> MaterialTheme.colorScheme.outline
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .background(bg, RoundedCornerShape(12.dp))
-                        .border(1.dp, borderCol, RoundedCornerShape(12.dp))
-                        .clickable {
-                            val updated = currentTask.copy(priority = p)
-                            task = updated
-                            todoViewModel.updateTaskDetails(updated)
-                        }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
+                androidx.compose.material3.OutlinedButton(
+                    onClick = {
+                        val updated = currentTask.copy(priority = p)
+                        task = updated
+                        todoViewModel.updateTaskDetails(updated)
+                    },
+                    modifier = Modifier.weight(1f),
+                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (active) semanticColor.copy(alpha = 0.15f) else Color.Transparent,
+                        contentColor = semanticColor
+                    ),
+                    border = BorderStroke(if (active) 2.dp else 1.dp, semanticColor),
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text(label, color = textColor, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(label, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -2382,18 +2384,21 @@ fun TaskDetailPage(
                     "WEEKDAYS" -> "Weekdays"
                     else -> item
                 }
-                Box(
-                    modifier = Modifier
-                        .background(if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                        .border(1.dp, if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                        .clickable {
-                            val updated = currentTask.copy(recurrence = item)
-                            task = updated
-                            todoViewModel.updateTaskDetails(updated)
-                        }
-                        .padding(horizontal = 14.dp, vertical = 8.dp)
+                androidx.compose.material3.OutlinedButton(
+                    onClick = {
+                        val updated = currentTask.copy(recurrence = item)
+                        task = updated
+                        todoViewModel.updateTaskDetails(updated)
+                    },
+                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (active) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                        contentColor = if (active) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                    ),
+                    border = BorderStroke(1.dp, if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline),
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                 ) {
-                    Text(label, color = if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                    Text(label, fontSize = 12.sp, fontWeight = FontWeight.Medium)
                 }
             }
         }
@@ -2628,63 +2633,63 @@ fun TaskDetailPage(
     }
 }
 
-@Composable
-fun TaskStatisticsGraph(completed: Int, remaining: Int) {
-    val total = completed + remaining
-    val progress = if (total == 0) 0f else completed.toFloat() / total.toFloat()
-    
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val surfaceVariantColor = MaterialTheme.colorScheme.surfaceVariant
-
-    Box(
-        modifier = Modifier
-            .size(160.dp)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
-            val strokeWidth = 16.dp.toPx()
-            val arcSize = kotlin.math.max(0f, size.minDimension - strokeWidth)
-            if (arcSize <= 0f) return@Canvas
-            
-            val topLeft = androidx.compose.ui.geometry.Offset(strokeWidth / 2, strokeWidth / 2)
-            
-            // Draw background (remaining) ring
-            drawArc(
-                color = surfaceVariantColor,
-                startAngle = 0f,
-                sweepAngle = 360f,
-                useCenter = false,
-                topLeft = topLeft,
-                size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
-                style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
-            )
-            
-            // Draw progress (completed) ring
-            drawArc(
-                color = primaryColor,
-                startAngle = -90f,
-                sweepAngle = if (total == 0) 0f else progress * 360f,
-                useCenter = false,
-                topLeft = topLeft,
-                size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
-                style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
-            )
-        }
+    @Composable
+    fun TaskStatisticsGraph(completed: Int, remaining: Int) {
+        val total = completed + remaining
+        val percentage = if (total > 0) (completed.toFloat() / total * 100).toInt() else 0
+        val progress = if (total > 0) completed.toFloat() / total.toFloat() else 0f
         
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            val percentage = if (total == 0) 0 else (progress * 100).toInt()
-            Text(
-                text = "$percentage%",
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp
-            )
-            Text(
-                text = if (total == completed && total > 0) "Done!" else "Completed",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 12.sp
-            )
-        }
+        val primaryColor = MaterialTheme.colorScheme.primary
+        val surfaceVariantColor = MaterialTheme.colorScheme.surfaceVariant
+    
+        Box(
+            modifier = Modifier
+                .size(160.dp)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
+                val strokeWidth = 16.dp.toPx()
+                val arcSize = kotlin.math.max(0f, size.minDimension - strokeWidth)
+                if (arcSize <= 0f) return@Canvas
+                
+                val topLeft = androidx.compose.ui.geometry.Offset(strokeWidth / 2, strokeWidth / 2)
+                
+                // Draw background (remaining) ring
+                drawArc(
+                    color = surfaceVariantColor,
+                    startAngle = 0f,
+                    sweepAngle = 360f,
+                    useCenter = false,
+                    topLeft = topLeft,
+                    size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                )
+                
+                // Draw progress (completed) ring
+                drawArc(
+                    color = primaryColor,
+                    startAngle = -90f,
+                    sweepAngle = if (total > 0) (completed.toFloat() / total) * 360f else 0f,
+                    useCenter = false,
+                    topLeft = topLeft,
+                    size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                )
+            }
+            
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "${percentage}%",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp
+                )
+                Text(
+                    text = if (total == completed && total > 0) "Done!" else "Completed",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 12.sp
+                )
+            }
     }
 }

@@ -26,10 +26,10 @@ private val ProfessionalLightColorScheme = lightColorScheme(
     tertiaryContainer = Color(0xFFFFDAD4),
     onTertiaryContainer = Color(0xFFD9411E),
 
-    background = Color(0xFFF7F8FA),
+    background = Color(0xFFF6F5F4),
     onBackground = Color(0xFF1F1A18),
 
-    surface = Color(0xFFF7F8FA),
+    surface = Color(0xFFF6F5F4),
     onSurface = Color(0xFF1F1A18),
     surfaceVariant = Color(0xFFF5DED8),
     onSurfaceVariant = Color(0xFF514441),

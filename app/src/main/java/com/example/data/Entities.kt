@@ -22,7 +22,7 @@ data class Tag(
 @Entity(tableName = "tasks")
 data class Task(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val title: String,
+    val title: String = "",
     val description: String = "",
     val isCompleted: Boolean = false,
     val dueDate: Long? = null, // Epoch timestamp (ms)
