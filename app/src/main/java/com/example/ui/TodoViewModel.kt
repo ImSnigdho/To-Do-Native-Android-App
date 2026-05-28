@@ -400,7 +400,7 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
             sb.append("\"priority\":").append(t.priority).append(",")
             sb.append("\"projectId\":").append(t.projectId ?: "null").append(",")
             sb.append("\"tagId\":").append(t.tagId ?: "null").append(",")
-            sb.append("\"recurrence\":").append(if (t.recurrence == null) "null" else "\"${t.recurrence}\"")
+            sb.append("\"recurrence\":").append("\"${t.recurrence}\"")
             sb.append("}")
             if (i < exportedTasks.size - 1) sb.append(",")
         }

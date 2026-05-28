@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -181,7 +182,7 @@ fun OnboardingCarousel(onComplete: () -> Unit) {
         Slide(
             title = "Collaborate & Discuss",
             desc = "Share task boards with teammates and coordinate instantly inside dedicated local task comment feeds.",
-            icon = Icons.Default.Comment,
+            icon = Icons.AutoMirrored.Filled.Comment,
             accentColor = Color(0xFF00E676)
         )
     )
@@ -1109,7 +1110,7 @@ fun TasksTabScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
-                        imageVector = Icons.Default.PlaylistAddCheck,
+                        imageVector = Icons.AutoMirrored.Filled.PlaylistAddCheck,
                         contentDescription = "Inbox empty",
                         tint = Color(0xFF85736E).copy(alpha = 0.3f),
                         modifier = Modifier.size(112.dp)
@@ -1531,7 +1532,7 @@ fun QuickAddTaskDialog(
                     border = BorderStroke(1.dp, Color(0xFFF5DED8))
                 ) {
                     Icon(
-                        imageVector = if (isSimulatingVoice) Icons.Default.VolumeUp else Icons.Default.Mic,
+                        imageVector = if (isSimulatingVoice) Icons.AutoMirrored.Filled.VolumeUp else Icons.Default.Mic,
                         contentDescription = "Voice dictation recording",
                         tint = if (isSimulatingVoice) Color.Red else Color(0xFF1F1A18)
                     )
